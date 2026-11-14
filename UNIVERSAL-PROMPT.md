@@ -1,4 +1,4 @@
-# Five-Agent Build (v2.5 candidate) - universal prompt
+# Proofline (v2.5 candidate) - universal prompt
 
 Paste everything below the line into any model as custom instructions or the first message. Then give it your idea (or the filled-in `templates/INTAKE.md`).
 

@@ -1,9 +1,9 @@
 ---
-name: agent-runtime-design
+name: proofline-runtime
 description: Design the software layer that enforces an agent workflow instead of trusting prompts - stage contracts a machine can check, a compile step before any model runs, a tool gateway with allowlists, a validation ladder, approvals tied to exact content, an evidence trail, and controlled memory. Use when the user says "enforce it in software, not in the prompt", "design an agent runtime", "tool broker", "approval gates", "make my ICM workspace run unattended", "agent operating system", or is planning something like Project Factory or Validryn. Produces a design document and a phased build order, not code.
 ---
 
-# Agent Runtime Design
+# Proofline Runtime
 
 Folders and markdown tell an agent what to do. They cannot stop it doing something else. This skill designs the layer underneath that can.
 

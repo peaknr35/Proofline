@@ -1,9 +1,9 @@
 ---
-name: agent-team-audit
+name: proofline-audit
 description: Find out whether each agent in a multi-agent setup earns its place - write every role as a responsibility that can be checked, read a real run for missing, duplicated and useless work, then test each role by removing it, swapping it for a generic one, or giving it to someone else under the same budget. Use when the user says "do I need this many agents", "audit my agent team", "which agent is dead weight", "why does my multi-agent setup keep failing at the handoff", "design the roles for my agents", or wants to know if one agent would do. Ends in a keep / merge / drop decision per role with the evidence, not an opinion.
 ---
 
-# Agent Team Audit
+# Proofline Audit
 
 More agents is not better. A role is worth keeping only if the work gets measurably worse without it, compared with fair alternatives that had the same budget. This skill finds that out.
 

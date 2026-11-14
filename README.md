@@ -1,8 +1,19 @@
-# Five-Agent Build (v2.5 candidate) - portable kit
+# Proofline (v2.5 candidate) - portable kit
 
 A model-independent method for turning an idea into a working, tested, packaged system, and for making each next project faster than the last. Plain text; nothing depends on one vendor.
 
 It aims to cut rework. No speed multiplier is claimed: measure yours with the numbers in the final report.
+
+## The name, and the four skills
+
+Proofline was called Five-Agent Build through v2.4. The old name pointed at the agent count; the method's point is that nothing is called done without proof. The change notes below keep the old name where they describe old versions, and so do the records in `selftest-run/`.
+
+| Skill | Was | Job | Status |
+|---|---|---|---|
+| `proofline-build` (this folder's `SKILL.md`) | `five-agent-build` | the full build method | v2.5 candidate, not yet re-run |
+| `proofline-plan` (`skills/proofline-plan/`) | `workflow-orchestration` | decide whether work needs organizing, then split and staff it | experimental: followed once, no benefit shown |
+| `proofline-audit` (`skills/proofline-audit/`) | `agent-team-audit` | test whether each agent in a team earns its place | written, not yet tried |
+| `proofline-runtime` (`skills/proofline-runtime/`) | `agent-runtime-design` | design the software that enforces a workflow | written, not yet tried |
 
 ## What changed in v2.5 (candidate: not yet run; it replaces the v2.4 candidate, which was never run either)
 
@@ -93,7 +104,9 @@ Drawn from the nine papers in `library/` (what each gave and how strong its evid
 | `library/SOURCES.md` | The papers behind the rules, how much of each was read, what each gave, and how strong its evidence is |
 | `library/EVIDENCE-CARDS.md` | Evidence cards for the five rules that carry the most weight, and what to test first |
 | `templates/EVIDENCE-CARD.md` | Blank card for any rule that claims to make builds faster |
-| `library/*.pdf` | The papers themselves; reference only, no model needs to load them |
+| `library/*.pdf` | The papers themselves. Not in the repository (other people's copyright); get them from the links in `library/SOURCES.md` |
+| `skills/` | The three companion skills: `proofline-plan`, `proofline-audit`, `proofline-runtime` |
+| `selftest-run/` | Records of the two self-test runs, kept as they were made |
 | `KIT-SELFTEST.md` | A 19-point test to run once per tool, plus a short probe for builder-only models |
 
 ## Loading it
@@ -136,7 +149,7 @@ Full shape and rules: `templates/icm/README.md`. `build/STATE.md` is a checkpoin
 
 ## Starting
 
-"Use five-agent-build." then the filled-in intake. For an upgrade: "Use five-agent-build to upgrade this repository. Keep: ... Change: ... Existing SPEC and test results: ..."
+"Use proofline." then the filled-in intake. For an upgrade: "Use proofline to upgrade this repository. Keep: ... Change: ... Existing SPEC and test results: ..."
 
 ## Limits to keep in mind
 

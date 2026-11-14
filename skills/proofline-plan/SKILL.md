@@ -1,15 +1,15 @@
 ---
-name: workflow-orchestration
+name: proofline-plan
 description: EXPERIMENTAL - followed once, on a task small enough that it rightly said "one worker"; no benefit shown yet and the multi-worker path is untested. Turn a task into a plan that knows its dependencies - decide first whether the work needs organizing at all, split it without thinking about who does it, then choose per unit whether one worker does it or it is delegated, write the handoffs and the checks only the joined result can pass, and charge the time spent organizing against the same budget as the work. Use when the user says "plan this build", "how should I split this across agents", "should this be one agent or several", "write the workflow", "orchestrate this", or hands over a long task with parts that depend on each other. Produces a plan and a delegation log, not the work itself.
 ---
 
-# Workflow Orchestration (experimental)
+# Proofline Plan (experimental)
 
 **Status: EXPERIMENTAL.** Written from two measured papers and run once (record at the end). In that run the method was followed and the plan did not help: same score as one agent with no plan, about twice the tokens. The part that splits work across several workers has never run. Read "How far to trust this" before relying on it.
 
 **What that run means in practice:** for a small task, do step 0 in your head and skip the written plan. Writing the plan is itself a cost. Use the full skill when step 0 says yes.
 
-This skill plans the work. `agent-team-audit` tests whether the team the plan proposes is justified. `agent-runtime-design` says what software must enforce. `five-agent-build` uses a plan like this inside a full build.
+This skill plans the work. `proofline-audit` tests whether the team the plan proposes is justified. `proofline-runtime` says what software must enforce. `proofline-build` uses a plan like this inside a full build.
 
 A skill can guide a plan. It cannot enforce a budget or a permission. Only the tool running the workers can.
 

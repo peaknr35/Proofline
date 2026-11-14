@@ -1,13 +1,13 @@
 ---
-name: five-agent-build
-description: Build or upgrade a working, tested, packaged system from an idea using a contract that is written fixtures-first, passes a completeness gate and is approved before any code, an ICM workspace foundation (router, per-folder contracts, shared facts) that any fresh agent can walk, work split into independently checkable units (whole features where possible) with the fewest scoped builders that fit, fresh independent QA, bounded repair, and a reuse library that makes each next project faster. Model-independent. Use for "run five agents", "full stack, everything works, not a demo", contract-first builds, or upgrading an existing project the same way.
+name: proofline-build
+description: Build or upgrade a working, tested, packaged system from an idea using a contract that is written fixtures-first, passes a completeness gate and is approved before any code, an ICM workspace foundation (router, per-folder contracts, shared facts) that any fresh agent can walk, work split into independently checkable units (whole features where possible) with the fewest scoped builders that fit, fresh independent QA, bounded repair, and a reuse library that makes each next project faster. Model-independent. Formerly five-agent-build. Use for "use proofline", "use five-agent-build", "run five agents", "full stack, everything works, not a demo", contract-first builds, or upgrading an existing project the same way.
 ---
 
-# Five-Agent Build (v2.5 candidate)
+# Proofline Build (v2.5 candidate)
 
 Turn an idea into a verified deliverable, delivered as an ICM workspace, with the least avoidable rework. Optimize **time to verified delivery**, not code volume or agent count.
 
-Writing code is the cheap part. Builds stall or go wrong where the contract is silent, because a builder does not ask about a gap, it fills it. So most of the Lead's effort goes into the contract: examples first, every gap closed, the surface listed and frozen. "Five agents" is a ceiling, not a target: one to four builders, set by the work, plus one independent QA role, coordinated by a Lead.
+Writing code is the cheap part. Builds stall or go wrong where the contract is silent, because a builder does not ask about a gap, it fills it. So most of the Lead's effort goes into the contract: examples first, every gap closed, the surface listed and frozen. The kit was first called Five-Agent Build. Five was always a ceiling, not a target: one to four builders, set by the work, plus one independent QA role, coordinated by a Lead.
 
 This is an instruction protocol, not a sandbox. File permissions, isolation, approvals and limits are only real where the host tool enforces them. Say which ones are enforced and which are only instructions.
 
