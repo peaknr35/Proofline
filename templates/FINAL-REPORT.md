@@ -29,6 +29,12 @@ Router, root context, folder contracts, shared facts present? · walk test: pass
 ## 6. Before production or sale
 Security · licensing · data and privacy · deployment · support · external services not yet verified · unsupported features.
 
+## 6b. Back to the ledger (only when the build came from a Shark Tank Proof brief)
+| What the product now does | Shown by (check and evidence file) | Evidence level | Suggested ledger entry |
+|---|---|---|---|
+
+Only rows at INTEGRATION TESTED or above are suggested as MEASURED. Nothing here is a buyer: built is not sold. The founder logs these with `/receipts`; this build does not write the ledger. Next: `/prove-it` or `/handshake`.
+
 ## 7. One next step
 
 ## 8. Banked for next time (optional)

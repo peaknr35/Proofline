@@ -2,6 +2,8 @@
 
 Answering these up front removes most back-and-forth. Leave a line blank if unknown; do not guess.
 
+Coming from Shark Tank Proof? Skip this form. Give `founder/build-brief.md` instead; it answers these lines with the claim id and label next to each fact (`templates/FROM-SHARK-TANK-PROOF.md`).
+
 - **Idea in one sentence:**
 - **Who uses it:**
 - **The one journey that must work** (start → finish):

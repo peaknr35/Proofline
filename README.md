@@ -15,6 +15,20 @@ Proofline was called Five-Agent Build through v2.4. The old name pointed at the 
 | `proofline-audit` (`skills/proofline-audit/`) | `agent-team-audit` | test whether each agent in a team earns its place | written, not yet tried |
 | `proofline-runtime` (`skills/proofline-runtime/`) | `agent-runtime-design` | design the software that enforces a workflow | written, not yet tried |
 
+## Works with Shark Tank Proof
+
+[Shark Tank Proof](https://github.com/peaknr35/shark-Tank-proof) tests whether a business is worth building; Proofline builds it. Its `/kill-or-build` ends with `founder/build-brief.md`, and `proofline-build` takes that file as its intake (`templates/FROM-SHARK-TANK-PROOF.md`).
+
+| Shark Tank Proof says | Proofline builds |
+|---|---|
+| Incomplete, or Not yet | nothing |
+| Unproven | only the small test asset the brief names: the thing a real person can pay, sign or book through |
+| Profitable | version 1 of what the real buyer bought |
+
+Both kits use the same four labels (MEASURED, THEY SAID IT, PLANNED, SIMULATED), so a fact keeps its label across the handoff. A simulated price becomes a setting, not a constant. Customer-facing words come only from claims the founder's ledger allows in public. At delivery, the final report lists what the product now does so the founder can log it. Built is not sold: only a real buyer changes the verdict.
+
+Each kit works without the other. This join is written and not yet run on a real project.
+
 ## What changed in v2.5 (candidate: not yet run; it replaces the v2.4 candidate, which was never run either)
 
 The first self-test did not stall on how agents were organized. It stalled on three things the contract never said. v2.5 moves the effort there.
@@ -92,6 +106,7 @@ Drawn from the nine papers in `library/` (what each gave and how strong its evid
 | `UNIVERSAL-PROMPT.md` | Paste into any chat model as instructions or the first message |
 | `COMPACT-PROMPT.txt` | About 1,106 characters (count it in your own tool), for short instruction boxes; a summary, not the whole method |
 | `templates/INTAKE.md` | Fill in once to start a project without question rounds |
+| `templates/FROM-SHARK-TANK-PROOF.md` | How to start from a Shark Tank Proof build brief, and what to hand back |
 | `templates/SPEC-TEMPLATE.md` | The contract |
 | `templates/SPEC-GATE.md` | The completeness check the contract must pass before anyone builds |
 | `templates/PLAN-TEMPLATE.md` | Stages, owners, limits, stop conditions |
