@@ -1,0 +1,94 @@
+baseline valid-two sha=7f152e77be300643
+== D1 not-JSON file
+Cannot read C:/Users/USER/AppData/Local/Temp/claude/eab4ae5e06910f12/5cbdcb1e-317d-44b9-8041-746440d9ae57/scratchpad/qa/drills/bad.json: not valid JSON
+  -> exit=3
+Cannot read C:/Users/USER/AppData/Local/Temp/claude/eab4ae5e06910f12/5cbdcb1e-317d-44b9-8041-746440d9ae57/scratchpad/qa/drills/bad.json: not valid JSON
+  -> exit=3
+Cannot read C:/Users/USER/AppData/Local/Temp/claude/eab4ae5e06910f12/5cbdcb1e-317d-44b9-8041-746440d9ae57/scratchpad/qa/drills/bad.json: not valid JSON
+  -> exit=3
+Cannot read C:/Users/USER/AppData/Local/Temp/claude/eab4ae5e06910f12/5cbdcb1e-317d-44b9-8041-746440d9ae57/scratchpad/qa/drills/bad.json: not valid JSON
+  -> exit=3
+  bad.json unchanged: yes
+bad.json tasks.json 
+== D2 missing file
+No tasks.
+  -> exit=0
+No task #1
+  -> exit=2
+No task #1
+  -> exit=2
+  created? n': No such file or directory
+== D3 unknown id
+No task #99
+  -> exit=2
+No task #99
+  -> exit=2
+== D4 non-numeric id
+Task id must be a positive whole number, got "abc"
+Task id must be a positive whole number, got "1.5"
+Task id must be a positive whole number, got "-1"
+Task id must be a positive whole number, got "0"
+Task id must be a positive whole number, got "1x"
+Task id must be a positive whole number, got ""
+Task id must be a positive whole number, got "99999999999999999999"
+done needs a task id
+Usage: node cli/todo.mjs <add "title" | list [--json] | done <id> | remove <id> [--yes]> [--file path]
+  -> exit=1
+== D5 over-long title
+Cannot add: title is longer than 200 characters
+Usage: node cli/todo.mjs <add "title" | list [--json] | done <id> | remove <id> [--yes]> [--file pat
+  -> exit=1
+-- exactly 200:
+Added #3: aaaaaaaaaaaaaaaaaaaa
+-- empty/blank:
+Cannot add: title is empty
+Usage: node cli/todo.mjs <add "title" | list [--json] | done <id> | remove <id> [--yes]> [--file path]
+  -> exit=1
+Cannot add: title is empty
+Usage: node cli/todo.mjs <add "title" | list [--json] | done <id> | remove <id> [--yes]> [--file path]
+  -> exit=1
+add needs a title
+Usage: node cli/todo.mjs <add "title" | list [--json] | done <id> | remove <id> [--yes]> [--file path]
+  -> exit=1
+  file unchanged after D3-D5: yes
+== D8 remove answered no
+Remove #1 Buy milk? Type yes to confirm: Cancelled
+  -> exit=0
+  byte-identical: yes
+Cancelled
+Cancelled
+Cancelled
+Cancelled
+Cancelled
+  still byte-identical after y/YES/yes please/empty/closed stdin
+-- remove answered yes
+Remove #1 Buy milk? Type yes to confirm: Removed #1
+  -> exit=0
+[x] #2 Call Sam
+  "nextId": 3,
+Added #3: after remove
+== D6 <script> title
+Added #1: <script>alert(1)</script><img src=x onerror=alert(2)> "q" & 's'
+  -> exit=0
+      "title": "<script>alert(1)</script><img src=x onerror=alert(2)> \"q\" & 's'",
+== unknown command / option
+Unknown command "frobnicate"
+Usage: node cli/todo.mjs <add "title" | list [--json] | done <id> | remove <id> [--yes]> [--file path]
+  -> exit=1
+Unknown option --nope
+No command given
+Usage: node cli/todo.mjs <add "title" | list [--json] | done <id> | remove <id> [--yes]> [--file path]
+  -> exit=1
+== folder as file
+Cannot read C:/Users/USER/AppData/Local/Temp/claude/eab4ae5e06910f12/5cbdcb1e-317d-44b9-8041-746440d9ae57/scratchpad/qa/drills/adir: file cannot be opened (EISDIR)
+  -> exit=3
+Cannot read C:/Users/USER/AppData/Local/Temp/claude/eab4ae5e06910f12/5cbdcb1e-317d-44b9-8041-746440d9ae57/scratchpad/qa/drills/adir: file cannot be opened (EISDIR)
+  -> exit=3
+== missing parent folder
+Cannot write C:/Users/USER/AppData/Local/Temp/claude/eab4ae5e06910f12/5cbdcb1e-317d-44b9-8041-746440d9ae57/scratchpad/qa/drills/nodir/tasks.json: write failed (ENOENT)
+  -> exit=3
+== BOM file
+Cannot read C:/Users/USER/AppData/Local/Temp/claude/eab4ae5e06910f12/5cbdcb1e-317d-44b9-8041-746440d9ae57/scratchpad/qa/drills/bom.json: not valid JSON
+  -> exit=3
+== leftovers:
+adir bad.json bom.json rm.json t200.json tasks.json x.json 

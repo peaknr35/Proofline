@@ -1,0 +1,15 @@
+{
+  "valid-empty.json": "valid",
+  "valid-two.json": "valid",
+  "valid-gap-ids.json": "valid",
+  "valid-unknown-fields.json": "valid",
+  "valid-markup-title.json": "valid",
+  "invalid-not-json.json": "invalid",
+  "invalid-wrong-version.json": "invalid",
+  "invalid-missing-done.json": "invalid",
+  "invalid-done-not-boolean.json": "invalid",
+  "invalid-duplicate-id.json": "invalid",
+  "invalid-nextid-too-low.json": "invalid",
+  "invalid-empty-title.json": "invalid",
+  "invalid-tasks-not-array.json": "invalid"
+}

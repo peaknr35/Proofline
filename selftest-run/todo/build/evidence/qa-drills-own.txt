@@ -1,0 +1,79 @@
+== R-1 emoji titles (hand-made files): CLI list vs web /api/tasks
+emoji x100: cli exit=0 
+  web emoji100.json -> 200 (258 bytes)
+  cli done exit=0 file unchanged=no
+emoji x101: cli exit=3 task #1: title is longer than 200 characters
+  web emoji101.json -> 200 (260 bytes)
+  cli done exit=3 file unchanged=yes
+emoji x150: cli exit=3 task #1: title is longer than 200 characters
+  web emoji150.json -> 200 (358 bytes)
+  cli done exit=3 file unchanged=yes
+emoji x200: cli exit=3 task #1: title is longer than 200 characters
+  web emoji200.json -> 200 (458 bytes)
+  cli done exit=3 file unchanged=yes
+emoji x201: cli exit=3 task #1: title is longer than 200 characters
+  web emoji201.json -> 500 (34 bytes)
+  cli done exit=3 file unchanged=yes
+-- CLI add with emoji: 100, 101, 200
+Added #1: 😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀
+Cannot add: title is longer than 200 characters
+Cannot add: title is longer than 200 characters
+== O1 concurrent writes: 12 parallel adds
+reported Added: 12  errors: 0
+list exit=0 tasks in file: 12  nextId:   "nextId": 13,
+duplicate ids reported by Added lines: 0
+leftover tmp files: 0
+  web par.json -> 200 (977 bytes)
+== O2 control characters and newline in a title
+Added #1: line one
+[x] #99 Forged line
+ exit=0
+Added #2: esc ^[[2J^[[31mred^G bell
+[ ] #1 line one
+[x] #99 Forged line
+[ ] #2 esc ^[[2J^[[31mred^G bell
+== O3 nextId at MAX_SAFE_INTEGER
+Added #9007199254740991: t1
+ exit=0
+Cannot read ...maxid.json: nextId 9007199254740992 is not greater than task id 9007199254740992
+ exit=3
+Cannot read ...maxid.json: nextId 9007199254740992 is not greater than task id 9007199254740992
+ exit=3
+still valid: exit=0
+  web maxid.json -> 200 (98 bytes)
+== O4 __proto__ keys
+[ ] #1 t
+ exit=0
+  web proto.json -> 200 (59 bytes)
+== O5 big file 5000 tasks (1431447 bytes)
+5000
+Done #5000
+  web big.json -> 200 (1221403 bytes)
+== O6 path tricks in --file
+[ ] #1 Buy milk
+[x] #2 Call Sam
+ exit=0
+No tasks.
+ NUL exit=0
+Added #1: x
+ add NUL exit=0
+[ ] #1 Buy milk
+[x] #2 Call Sam
+ ADS exit=0
+--file needs a path
+Usage: node cli/todo.mjs <add "title" | list [--json] | done <id> | remove <id> [--yes]> [--file path]
+ --file= exit=1
+Cannot read 
+ (two --file: last wins?)
+[ ] #1 Buy milk
+[x] #2 Call Sam
+ TODO_FILE exit=0
+No tasks.
+ default ./tasks.json exit=0
+== O7 title starting with --
+Unknown option --weird
+Added #1: --weird --file C:/Users/USER/AppData/Local/Temp/claude/eab4ae5e06910f12/5cbdcb1e-317d-44b9-8041-746440d9ae57/scratchpad/qa/own/v.json
+    { "id": 1, "title": "Buy milk", "done": false, "created": "2026-11-13T09:00:00.000Z" },
+    { "id": 2, "title": "Call Sam", "done": true, "created": "2026-11-13T09:05:00.000Z" }
+0
+project root clean (no tasks.json): 0

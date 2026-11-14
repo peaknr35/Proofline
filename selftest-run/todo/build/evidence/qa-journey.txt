@@ -1,0 +1,97 @@
+== server on missing file
+Tasklet web view: http://127.0.0.1:4391
+-- GET / before any task
+status=200 type=text/html; charset=utf-8
+<p id="summary">0 open, 0 done</p>
+<p id="empty">No tasks yet.</p>
+{"tasks":[]} status=200
+p0.html server.err server.out 
+== add
+Added #1: Buy milk
+exit=0
+Added #2: Call Sam
+exit=0
+{
+  "version": 1,
+  "nextId": 3,
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Buy milk",
+      "done": false,
+      "created": "2026-11-13T13:14:47.664Z"
+    },
+    {
+      "id": 2,
+      "title": "Call Sam",
+      "done": false,
+      "created": "2026-11-13T13:14:48.503Z"
+    }
+  ]
+}
+-- list
+[ ] #1 Buy milk
+[ ] #2 Call Sam
+-- web after add
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 167
+cache-control: no-store
+x-content-type-options: nosniff
+Date: Fri, 13 Nov 2026 13:14:49 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"tasks":[{"id":1,"title":"Buy milk","done":false,"created":"2026-11-13T13:14:47.664Z"},{"id":2,"title":"Call Sam","done":false,"created":"2026-11-13T13:14:48.503Z"}]}
+<p id="summary">2 open, 0 done</p>
+<li><span class="id">#1</span> <span class="title">Buy milk</span></li>
+<li><span class="id">#2</span> <span class="title">Call Sam</span></li>
+== done 1
+Done #1
+exit=0
+{
+  "version": 1,
+  "nextId": 3,
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Buy milk",
+      "done": true,
+      "created": "2026-11-13T13:14:47.664Z"
+    },
+    {
+      "id": 2,
+      "title": "Call Sam",
+      "done": false,
+      "created": "2026-11-13T13:14:48.503Z"
+    }
+  ]
+}
+-- web after done
+{"tasks":[{"id":1,"title":"Buy milk","done":true,"created":"2026-11-13T13:14:47.664Z"},{"id":2,"title":"Call Sam","done":false,"created":"2026-11-13T13:14:48.503Z"}]}
+<p id="summary">1 open, 1 done</p>
+<li class="done"><span class="id">#1</span> <span class="title">Buy milk</span> <span class="state">Done</span></li>
+<li><span class="id">#2</span> <span class="title">Call Sam</span></li>
+-- list / list --json
+[x] #1 Buy milk
+[ ] #2 Call Sam
+[  {    "id": 1,    "title": "Buy milk",    "done": true,    "created": "2026-11-13T13:14:47.664Z"  },  {    "id": 2,    "title": "Call Sam",    "done": false,    "created": "2026-11-13T13:14:48.503Z"  }]
+-- done 1 again
+Already done #1
+exit=0
+== other routes
+GET /nope 404
+POST / 405
+DELETE /api/tasks 405
+HEAD / 405
+== bind check
+  TCP    127.0.0.1:4391         0.0.0.0:0              LISTENING       29500
+== port in use drill
+Cannot start web view on 127.0.0.1:4391: port already in use
+exit=1
+-- first server still answers:
+200
+== stopped; listeners left:
+0
+server.err: []
+p0.html server.err server.out tasks.json 

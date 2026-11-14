@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "nextId": 2,
+  "tasks": [
+    { "id": 1, "title": "<script>alert(1)</script> & \"quotes\"", "done": false, "created": "2026-11-13T09:00:00.000Z" }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "dir": "C:\\Users\\USER\\AppData\\Local\\Temp\\claude\\7bfffcf354a989de\\4fa2e2df-3007-4634-be38-473d56ea48db\\scratchpad\\orch\\arm-b",
+  "webOther": false,
+  "pass": 59,
+  "total": 59,
+  "score": 100,
+  "resolved": true,
+  "joinedAll": true,
+  "groups": {
+    "cli": {
+      "pass": 21,
+      "total": 21
+    },
+    "fixture-cli": {
+      "pass": 13,
+      "total": 13
+    },
+    "fixture-web": {
+      "pass": 13,
+      "total": 13
+    },
+    "web": {
+      "pass": 8,
+      "total": 8
+    },
+    "joined": {
+      "pass": 4,
+      "total": 4
+    }
+  },
+  "failed": []
+}

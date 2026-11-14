@@ -1,0 +1,12 @@
+{
+  "name": "tasklet",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Command-line to-do list in one JSON file, with a read-only web view. Kit self-test project.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node scripts/test.mjs",
+    "web": "node web/server.mjs"
+  }
+}

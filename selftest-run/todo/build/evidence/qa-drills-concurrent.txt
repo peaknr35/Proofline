@@ -1,0 +1,8 @@
+spawned 30; exit 0: 30; other exits: []
+distinct ids announced: 30 of 30; tasks actually in file: 30; nextId: 31
+file parses and is valid JSON: yes; leftover .tmp: 0
+  cli reader verdict exit=0
+spawned 30; exit 0: 30; other exits: []
+distinct ids announced: 30 of 30; tasks actually in file: 30; nextId: 31
+file parses and is valid JSON: yes; leftover .tmp: 0
+  cli reader verdict exit=0

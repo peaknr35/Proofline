@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "nextId": 6,
+  "tasks": [
+    { "id": 2, "title": "Kept after a remove", "done": false, "created": "2026-11-13T09:00:00.000Z" },
+    { "id": 5, "title": "Ids have gaps", "done": true, "created": "2026-11-13T09:05:00.000Z" }
+  ]
+}

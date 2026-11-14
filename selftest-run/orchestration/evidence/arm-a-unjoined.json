@@ -1,0 +1,37 @@
+{
+  "dir": "C:\\Users\\USER\\AppData\\Local\\Temp\\claude\\7bfffcf354a989de\\4fa2e2df-3007-4634-be38-473d56ea48db\\scratchpad\\orch\\arm-a",
+  "webOther": true,
+  "pass": 55,
+  "total": 59,
+  "score": 93.2,
+  "resolved": false,
+  "joinedAll": false,
+  "groups": {
+    "cli": {
+      "pass": 21,
+      "total": 21
+    },
+    "fixture-cli": {
+      "pass": 13,
+      "total": 13
+    },
+    "fixture-web": {
+      "pass": 13,
+      "total": 13
+    },
+    "web": {
+      "pass": 8,
+      "total": 8
+    },
+    "joined": {
+      "pass": 0,
+      "total": 4
+    }
+  },
+  "failed": [
+    "J01: task added by CLI not in /api/tasks",
+    "J02: task added by CLI not on the page",
+    "J03: done by CLI not shown done by web",
+    "J04: web refuses or misreads CLI rewrite of valid-empty.json"
+  ]
+}

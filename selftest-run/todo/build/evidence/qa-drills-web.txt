@@ -1,0 +1,59 @@
+== W1 script title rendered
+<li><span class="id">#1</span> <span class="title">&lt;script&gt;alert(1)&lt;/script&gt;&lt;img src=x onerror=alert(2)&gt; &quot;q&quot; &amp; &#39;s&#39;</span></li>
+{"tasks":[{"id":1,"title":"<script>alert(1)</script><img src=x onerror=alert(2)> \"q\" & 's'","done":false,"created":"2026-11-13T13:15:11.790Z"}]}
+raw <script count in page: 0
+== W2 not-JSON
+HTTP/1.1 500 Internal Server Error
+content-type: text/html; charset=utf-8
+content-length: 694
+<p id="error" role="alert">Cannot read tasks file</p>
+{"error":"Cannot read tasks file"} status=500 type=application/json
+leak check (path/stack/SyntaxError) hits: 0
+unchanged: yes
+== W3 recovers when file fixed (no cache)
+<p id="summary">1 open, 1 done</p>
+== W4 file deleted while running
+{"tasks":[]} status=200
+== W5 folder at path
+{"error":"Cannot read tasks file"} status=500
+== W6 path tricks in URL
+404 /../../../Windows/win.ini -> Not Found 
+404 /%2e%2e/%2e%2e/package.json -> Not Found 
+404 /api/tasks/ -> Not Found 
+404 /api/tasks/../../SPEC.md -> Not Found 
+404 // -> Not Found 
+200 /?file=C:/Windows/win.ini -> <!doctype html> <html lang="en"> <head> <meta charset="utf-8
+200 /api/tasks?x=<script> -> {"tasks":[]}
+404 /index.html -> Not Found 
+404 /%00 -> Not Found 
+== W7 methods
+POST / 405  POST /api/tasks 405
+PUT / 405  PUT /api/tasks 405
+PATCH / 405  PATCH /api/tasks 405
+DELETE / 405  DELETE /api/tasks 405
+OPTIONS / 405  OPTIONS /api/tasks 405
+== W8 raw garbage request
+HTTP/1.1 400 Bad Request
+Connection: close
+
+== W9 reachable on non-loopback address?
+lan ip=<lan-ip>
+status=000 err=Failed to connect to <lan-ip>:4392 after 2042 ms: Could not connect to server
+  TCP    127.0.0.1:4392         0.0.0.0:0              LISTENING       30376
+== W10 bad settings
+--port needs an integer from 1 to 65535
+  (--port 0) exit=1
+--port needs an integer from 1 to 65535
+  (--port 70000) exit=1
+--port needs an integer from 1 to 65535
+  (--port abc) exit=1
+--port needs an integer from 1 to 65535
+  (--port) exit=1
+Unknown argument: --host
+  (--host 0.0.0.0) exit=1
+--file needs a path
+  (--file) exit=1
+listeners left: 0
+server stderr: []
+files in drill dir:
+adir bad.json bom.json r.txt rm.json s.err s.out t200.json tasks.json x.json 

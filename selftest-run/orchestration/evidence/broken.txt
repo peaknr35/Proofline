@@ -1,0 +1,68 @@
+✖ J1 add and done on the command line show up on the same running web server (91.7212ms)
+✖ J2 CLI and web agree with expected.json on every fixture (135.6455ms)
+✖ J3 unknown fields dropped, removed id never reused, web shows what the CLI wrote (254.7018ms)
+✔ P2 a bad file is refused by both parts and stays byte-identical (221.9187ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 1
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 797.3292
+
+✖ failing tests:
+
+test at tests\joined.test.mjs:54:1
+✖ J1 add and done on the command line show up on the same running web server (91.7212ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  500 !== 200
+  
+      at TestContext.<anonymous> (file:///C:/Users/USER/AppData/Local/Temp/claude/7bfffcf354a989de/4fa2e2df-3007-4634-be38-473d56ea48db/scratchpad/orch/broken-a/tests/joined.test.mjs:62:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 500,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\joined.test.mjs:88:1
+✖ J2 CLI and web agree with expected.json on every fixture (135.6455ms)
+  AssertionError [ERR_ASSERTION]: GET / for valid-two.json
+  
+  500 !== 200
+  
+      at TestContext.<anonymous> (file:///C:/Users/USER/AppData/Local/Temp/claude/7bfffcf354a989de/4fa2e2df-3007-4634-be38-473d56ea48db/scratchpad/orch/broken-a/tests/joined.test.mjs:100:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 500,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\joined.test.mjs:104:1
+✖ J3 unknown fields dropped, removed id never reused, web shows what the CLI wrote (254.7018ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  500 !== 200
+  
+      at TestContext.<anonymous> (file:///C:/Users/USER/AppData/Local/Temp/claude/7bfffcf354a989de/4fa2e2df-3007-4634-be38-473d56ea48db/scratchpad/orch/broken-a/tests/joined.test.mjs:121:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 500,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

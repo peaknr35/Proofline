@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "nextId": 3,
+  "tasks": [
+    { "id": 1, "title": "First", "done": false, "created": "2026-11-13T09:00:00.000Z" },
+    { "id": 1, "title": "Same id", "done": false, "created": "2026-11-13T09:05:00.000Z" }
+  ]
+}

@@ -1,0 +1,2 @@
+83bbec3ac3f8ddd0e519fb75e2c936028abb0c0ce271c8777479789c78779e02 *<run folder>/verifier/verify.mjs
+deafc58af41d3cd281157ece0082d8eec48db837841ece9a95959f2c4ac6af43 *<run folder>/task/TASK.md

@@ -1,0 +1,15 @@
+fixtures on disk: 13, verdicts in expected.json: 13
+OK   invalid-done-not-boolean.json    expected=invalid cli=invalid(exit 3) web=invalid(api 500, page 500) unchanged=true | Cannot read contract/fixtures/invalid-done-not-boolean.json: task #1: done is not a boolean | {"error":"Cannot read tasks file"}
+OK   invalid-duplicate-id.json        expected=invalid cli=invalid(exit 3) web=invalid(api 500, page 500) unchanged=true | Cannot read contract/fixtures/invalid-duplicate-id.json: duplicate task id 1 | {"error":"Cannot read tasks file"}
+OK   invalid-empty-title.json         expected=invalid cli=invalid(exit 3) web=invalid(api 500, page 500) unchanged=true | Cannot read contract/fixtures/invalid-empty-title.json: task #1: title is empty | {"error":"Cannot read tasks file"}
+OK   invalid-missing-done.json        expected=invalid cli=invalid(exit 3) web=invalid(api 500, page 500) unchanged=true | Cannot read contract/fixtures/invalid-missing-done.json: task #1: done is not a boolean | {"error":"Cannot read tasks file"}
+OK   invalid-nextid-too-low.json      expected=invalid cli=invalid(exit 3) web=invalid(api 500, page 500) unchanged=true | Cannot read contract/fixtures/invalid-nextid-too-low.json: nextId 2 is not greater than task id 2 | {"error":"Cannot read tasks file"}
+OK   invalid-not-json.json            expected=invalid cli=invalid(exit 3) web=invalid(api 500, page 500) unchanged=true | Cannot read contract/fixtures/invalid-not-json.json: not valid JSON | {"error":"Cannot read tasks file"}
+OK   invalid-tasks-not-array.json     expected=invalid cli=invalid(exit 3) web=invalid(api 500, page 500) unchanged=true | Cannot read contract/fixtures/invalid-tasks-not-array.json: tasks is not an array | {"error":"Cannot read tasks file"}
+OK   invalid-wrong-version.json       expected=invalid cli=invalid(exit 3) web=invalid(api 500, page 500) unchanged=true | Cannot read contract/fixtures/invalid-wrong-version.json: version is not 1 | {"error":"Cannot read tasks file"}
+OK   valid-empty.json                 expected=valid cli=valid(exit 0) web=valid(api 200, page 200) unchanged=true
+OK   valid-gap-ids.json               expected=valid cli=valid(exit 0) web=valid(api 200, page 200) unchanged=true
+OK   valid-markup-title.json          expected=valid cli=valid(exit 0) web=valid(api 200, page 200) unchanged=true
+OK   valid-two.json                   expected=valid cli=valid(exit 0) web=valid(api 200, page 200) unchanged=true
+OK   valid-unknown-fields.json        expected=valid cli=valid(exit 0) web=valid(api 200, page 200) unchanged=true
+mismatches: 0

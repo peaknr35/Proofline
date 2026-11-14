@@ -1,0 +1,13 @@
+# Research papers: other people's copyright. Listed in library/SOURCES.md instead.
+*.pdf
+
+# Old nested copy of the kit, a backup archive, and personal-use material
+# built on someone else's brand. Not for release.
+templates/five-agent-build/
+*.zip
+
+# Local leftovers
+node_modules/
+tasks.json
+*.log
+.env*
