@@ -1,0 +1,344 @@
+{
+  "rule": "SPEC 7.2 and 8.2. Each case: copy the start fixture to TODO_FILE (or none), start `todo serve --port <free port>`, wait for the startup line, send one request with Host: 127.0.0.1:<PORT> unless \"host\" is given, check status, content-type, commonHeaders on every response, then the body checks, then \"end\" (default \"unchanged\" or \"absent\"; the server never writes the file). \"mustNotMatch\" entries are JavaScript regular expressions (no flags) that must not match the body. <PORT> is replaced by the real port wherever it appears: in \"host\", in \"path\" and in expected text (v0.6, IR-49).",
+  "commonHeaders": {
+    "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'",
+    "x-content-type-options": "nosniff",
+    "cache-control": "no-store"
+  },
+  "cases": [
+    {
+      "name": "page with two tasks",
+      "start": "valid-two.json",
+      "method": "GET",
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "mustContain": [
+        "<!doctype html>",
+        "<html lang=\"en\">",
+        "<meta charset=\"utf-8\">",
+        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+        "<title>To-do</title>",
+        "<h1>To-do</h1>",
+        "<section id=\"open\">",
+        "<h2>Open (1)</h2>",
+        "<li data-id=\"1\">buy milk</li>",
+        "<section id=\"done\">",
+        "<h2>Done (1)</h2>",
+        "<li data-id=\"3\">call the bank</li>"
+      ],
+      "mustNotContain": [
+        "<script",
+        " src=",
+        "<link",
+        "http://",
+        "https://",
+        "class=\"empty\"",
+        "<form",
+        "<a ",
+        "<img",
+        "<iframe",
+        "href="
+      ],
+      "inOrder": [
+        "<section id=\"open\">",
+        "<li data-id=\"1\">",
+        "<section id=\"done\">",
+        "<li data-id=\"3\">"
+      ]
+    },
+    {
+      "name": "empty list",
+      "start": "valid-empty.json",
+      "method": "GET",
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "mustContain": [
+        "<h2>Open (0)</h2>",
+        "<h2>Done (0)</h2>"
+      ],
+      "mustNotContain": [
+        "<li",
+        "<ul"
+      ],
+      "countOf": {
+        "<p class=\"empty\">None.</p>": 2
+      }
+    },
+    {
+      "name": "no file at all",
+      "start": "none",
+      "method": "GET",
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "mustContain": [
+        "<h2>Open (0)</h2>",
+        "<h2>Done (0)</h2>"
+      ],
+      "end": "absent"
+    },
+    {
+      "name": "html in titles is escaped",
+      "start": "valid-html-chars.json",
+      "method": "GET",
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "mustContain": [
+        "<li data-id=\"1\">&lt;b&gt;&amp;&quot;&#39;</li>",
+        "<li data-id=\"2\">&lt;script&gt;alert(1)&lt;/script&gt;</li>"
+      ],
+      "mustNotContain": [
+        "<script",
+        "<b>"
+      ]
+    },
+    {
+      "name": "tasks sorted by id within each section",
+      "start": "valid-unsorted.json",
+      "method": "GET",
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "inOrder": [
+        "<section id=\"open\">",
+        "<li data-id=\"1\">buy milk</li>",
+        "<section id=\"done\">",
+        "<li data-id=\"3\">call the bank</li>"
+      ]
+    },
+    {
+      "name": "query string ignored",
+      "start": "valid-two.json",
+      "method": "GET",
+      "path": "/?x=1",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "mustContain": [
+        "<h2>Open (1)</h2>"
+      ]
+    },
+    {
+      "name": "HEAD gives headers, no body",
+      "start": "valid-two.json",
+      "method": "HEAD",
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "body": ""
+    },
+    {
+      "name": "localhost host header allowed",
+      "start": "valid-two.json",
+      "method": "GET",
+      "path": "/",
+      "host": "localhost:<PORT>",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "mustContain": [
+        "<h2>Open (1)</h2>"
+      ]
+    },
+    {
+      "name": "other host header refused (DNS rebinding)",
+      "start": "valid-two.json",
+      "method": "GET",
+      "path": "/",
+      "host": "evil.example:<PORT>",
+      "status": 403,
+      "contentType": "text/plain; charset=utf-8",
+      "body": "Forbidden\n"
+    },
+    {
+      "name": "right name, wrong port refused",
+      "start": "valid-two.json",
+      "method": "GET",
+      "path": "/",
+      "host": "127.0.0.1:1",
+      "status": 403,
+      "contentType": "text/plain; charset=utf-8",
+      "body": "Forbidden\n"
+    },
+    {
+      "name": "each section sorted by id",
+      "start": "valid-sections-unsorted.json",
+      "method": "GET",
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "inOrder": [
+        "<section id=\"open\">",
+        "<li data-id=\"2\">b</li>",
+        "<li data-id=\"5\">e</li>",
+        "<section id=\"done\">",
+        "<li data-id=\"1\">a</li>",
+        "<li data-id=\"4\">d</li>"
+      ]
+    },
+    {
+      "name": "absolute-form target is not found",
+      "start": "valid-two.json",
+      "method": "GET",
+      "path": "http://127.0.0.1:<PORT>/",
+      "status": 404,
+      "contentType": "text/plain; charset=utf-8",
+      "body": "Not found\n",
+      "note": "the client sends this exact request target (http.request with path set to it sends it unchanged); Host header as usual"
+    },
+    {
+      "name": "unknown path",
+      "start": "valid-two.json",
+      "method": "GET",
+      "path": "/tasks.json",
+      "status": 404,
+      "contentType": "text/plain; charset=utf-8",
+      "body": "Not found\n"
+    },
+    {
+      "name": "index.html is not an alias",
+      "start": "valid-two.json",
+      "method": "GET",
+      "path": "/index.html",
+      "status": 404,
+      "contentType": "text/plain; charset=utf-8",
+      "body": "Not found\n"
+    },
+    {
+      "name": "path traversal is just an unknown path",
+      "start": "valid-two.json",
+      "method": "GET",
+      "path": "/../todo.json",
+      "status": 404,
+      "contentType": "text/plain; charset=utf-8",
+      "body": "Not found\n"
+    },
+    {
+      "name": "POST refused",
+      "start": "valid-two.json",
+      "method": "POST",
+      "path": "/",
+      "status": 405,
+      "contentType": "text/plain; charset=utf-8",
+      "body": "Method not allowed\n",
+      "headers": {
+        "allow": "GET, HEAD"
+      }
+    },
+    {
+      "name": "DELETE on unknown path: method checked first",
+      "start": "valid-two.json",
+      "method": "DELETE",
+      "path": "/x",
+      "status": 405,
+      "contentType": "text/plain; charset=utf-8",
+      "body": "Method not allowed\n",
+      "headers": {
+        "allow": "GET, HEAD"
+      }
+    },
+    {
+      "name": "damaged file",
+      "start": "invalid-not-json.json",
+      "method": "GET",
+      "path": "/",
+      "status": 500,
+      "contentType": "text/plain; charset=utf-8",
+      "body": "The task file <FILE> is damaged and was not changed. Fix or move it, then try again.\n"
+    },
+    {
+      "name": "newer version file",
+      "start": "invalid-version-2.json",
+      "method": "GET",
+      "path": "/",
+      "status": 500,
+      "contentType": "text/plain; charset=utf-8",
+      "body": "The task file <FILE> was written by a different version of todo (file version 2). It was not changed.\n"
+    },
+    {
+      "name": "task file is a directory",
+      "start": "directory",
+      "method": "GET",
+      "path": "/",
+      "status": 500,
+      "contentType": "text/plain; charset=utf-8",
+      "body": "Cannot read the task file <FILE>.\n",
+      "end": "directory"
+    },
+    {
+      "name": "host header is case-insensitive",
+      "start": "valid-two.json",
+      "method": "GET",
+      "path": "/",
+      "host": "LOCALHOST:<PORT>",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "mustContain": [
+        "<h2>Open (1)</h2>"
+      ]
+    },
+    {
+      "name": "style sets no font sizes and no pixel widths",
+      "start": "valid-two.json",
+      "method": "GET",
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "countOf": {
+        "<style>": 1
+      },
+      "mustNotMatch": [
+        "font-size",
+        "(?:min-|max-)?width\\s*:\\s*[0-9.]+px"
+      ]
+    },
+    {
+      "name": "1000 tasks",
+      "start": "valid-1000.json",
+      "method": "GET",
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "mustContain": [
+        "<h2>Open (500)</h2>",
+        "<h2>Done (500)</h2>",
+        "<li data-id=\"1000\">task 1000</li>"
+      ],
+      "countOf": {
+        "<li data-id=": 1000
+      }
+    }
+  ],
+  "startupCases": [
+    {
+      "name": "startup line",
+      "args": [
+        "serve",
+        "--port",
+        "<PORT>"
+      ],
+      "stdoutFirstLine": "Serving your list at http://127.0.0.1:<PORT>/ (press Ctrl+C to stop)",
+      "listensOn": "127.0.0.1 only"
+    },
+    {
+      "name": "default port",
+      "args": [
+        "serve"
+      ],
+      "stdoutFirstLine": "Serving your list at http://127.0.0.1:7070/ (press Ctrl+C to stop)",
+      "note": "skip if 7070 is busy on the test machine; record SKIPPED, not PASS"
+    },
+    {
+      "name": "port in use",
+      "args": [
+        "serve",
+        "--port",
+        "<BUSY>"
+      ],
+      "exit": 5,
+      "stdout": "",
+      "stderr": "todo: port <BUSY> is already in use. Try another one with --port.\n"
+    }
+  ]
+}

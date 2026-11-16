@@ -1,0 +1,303 @@
+{
+  "rule": "SPEC 6.2: join args with one space -> NFC -> trim (String.prototype.trim) -> refused-character check -> empty check -> length check (Unicode code points, after NFC and trim, max 200).",
+  "cases": [
+    {
+      "name": "two words joined",
+      "args": [
+        "buy",
+        "milk"
+      ],
+      "title": "buy milk"
+    },
+    {
+      "name": "one quoted arg",
+      "args": [
+        "buy milk"
+      ],
+      "title": "buy milk"
+    },
+    {
+      "name": "outer spaces trimmed",
+      "args": [
+        "  buy milk  "
+      ],
+      "title": "buy milk"
+    },
+    {
+      "name": "inner spaces kept",
+      "args": [
+        "buy  milk"
+      ],
+      "title": "buy  milk"
+    },
+    {
+      "name": "empty middle arg keeps both joins",
+      "args": [
+        "a",
+        "",
+        "b"
+      ],
+      "title": "a  b"
+    },
+    {
+      "name": "no-break space trimmed",
+      "args": [
+        " x "
+      ],
+      "title": "x"
+    },
+    {
+      "name": "ideographic space trimmed",
+      "args": [
+        "　x"
+      ],
+      "title": "x"
+    },
+    {
+      "name": "leading dashes are title text",
+      "args": [
+        "--port",
+        "5"
+      ],
+      "title": "--port 5"
+    },
+    {
+      "name": "decomposed e-acute stored as one code point",
+      "args": [
+        "café"
+      ],
+      "title": "café"
+    },
+    {
+      "name": "empty string",
+      "args": [
+        ""
+      ],
+      "error": "E_TITLE_EMPTY"
+    },
+    {
+      "name": "only spaces",
+      "args": [
+        "   "
+      ],
+      "error": "E_TITLE_EMPTY"
+    },
+    {
+      "name": "only tab and newline (trimmed away)",
+      "args": [
+        " \t\n "
+      ],
+      "error": "E_TITLE_EMPTY"
+    },
+    {
+      "name": "inner tab",
+      "args": [
+        "a\tb"
+      ],
+      "error": "E_TITLE_CONTROL"
+    },
+    {
+      "name": "inner newline",
+      "args": [
+        "a\nb"
+      ],
+      "error": "E_TITLE_CONTROL"
+    },
+    {
+      "name": "inner carriage return",
+      "args": [
+        "a\rb"
+      ],
+      "error": "E_TITLE_CONTROL"
+    },
+    {
+      "name": "null byte",
+      "args": [
+        "a\u0000b"
+      ],
+      "error": "E_TITLE_CONTROL"
+    },
+    {
+      "name": "escape (terminal colour codes)",
+      "args": [
+        "\u001b[31mred"
+      ],
+      "error": "E_TITLE_CONTROL"
+    },
+    {
+      "name": "delete char",
+      "args": [
+        "ab"
+      ],
+      "error": "E_TITLE_CONTROL"
+    },
+    {
+      "name": "C1 control",
+      "args": [
+        "ab"
+      ],
+      "error": "E_TITLE_CONTROL"
+    },
+    {
+      "name": "line separator",
+      "args": [
+        "a b"
+      ],
+      "error": "E_TITLE_CONTROL"
+    },
+    {
+      "name": "paragraph separator",
+      "args": [
+        "a b"
+      ],
+      "error": "E_TITLE_CONTROL"
+    },
+    {
+      "name": "bidi override",
+      "args": [
+        "‮abc"
+      ],
+      "error": "E_TITLE_CONTROL"
+    },
+    {
+      "name": "bidi isolate",
+      "args": [
+        "a⁦b"
+      ],
+      "error": "E_TITLE_CONTROL"
+    },
+    {
+      "name": "lone high surrogate (broken character)",
+      "args": [
+        "a\ud800b"
+      ],
+      "error": "E_TITLE_CONTROL"
+    },
+    {
+      "name": "lone low surrogate alone",
+      "args": [
+        "\udc00"
+      ],
+      "error": "E_TITLE_CONTROL"
+    },
+    {
+      "name": "control and too long: control wins",
+      "args": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\tb"
+      ],
+      "error": "E_TITLE_CONTROL"
+    },
+    {
+      "name": "199 ascii (under limit)",
+      "args": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ],
+      "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "name": "200 ascii (at limit)",
+      "args": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ],
+      "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "name": "201 ascii (over limit)",
+      "args": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ],
+      "error": "E_TITLE_TOO_LONG",
+      "count": 201
+    },
+    {
+      "name": "200 ascii plus outer spaces (trim first)",
+      "args": [
+        "  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  "
+      ],
+      "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "name": "100 + 99 joined by a space = 200",
+      "args": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      ],
+      "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    {
+      "name": "100 + 100 joined by a space = 201",
+      "args": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      ],
+      "error": "E_TITLE_TOO_LONG",
+      "count": 201
+    },
+    {
+      "name": "one emoji is one code point",
+      "args": [
+        "🎉"
+      ],
+      "title": "🎉"
+    },
+    {
+      "name": "200 emoji (at limit, 400 UTF-16 units)",
+      "args": [
+        "🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉"
+      ],
+      "title": "🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉"
+    },
+    {
+      "name": "201 emoji (over limit)",
+      "args": [
+        "🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉"
+      ],
+      "error": "E_TITLE_TOO_LONG",
+      "count": 201
+    },
+    {
+      "name": "thumbs up with skin tone counts 2",
+      "args": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa👍🏽"
+      ],
+      "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa👍🏽"
+    },
+    {
+      "name": "thumbs up with skin tone over limit",
+      "args": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa👍🏽"
+      ],
+      "error": "E_TITLE_TOO_LONG",
+      "count": 201
+    },
+    {
+      "name": "zero width joiner allowed (family emoji, 5 code points)",
+      "args": [
+        "👨‍👩‍👧"
+      ],
+      "title": "👨‍👩‍👧"
+    },
+    {
+      "name": "200 decomposed e-acute = 400 before NFC, 200 after (at limit)",
+      "args": [
+        "éééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+      ],
+      "title": "éééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+    },
+    {
+      "name": "201 decomposed e-acute (over limit after NFC)",
+      "args": [
+        "ééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+      ],
+      "error": "E_TITLE_TOO_LONG",
+      "count": 201
+    },
+    {
+      "name": "html characters are plain text",
+      "args": [
+        "<b>&\"'"
+      ],
+      "title": "<b>&\"'"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "rule": "SPEC 6.3: an id argument must match ^[1-9][0-9]*$ and be <= 9007199254740991; otherwise E_ID_INVALID.",
+  "cases": [
+    {
+      "arg": "1",
+      "id": 1
+    },
+    {
+      "arg": "42",
+      "id": 42
+    },
+    {
+      "arg": "9007199254740990",
+      "id": 9007199254740990
+    },
+    {
+      "arg": "9007199254740991",
+      "id": 9007199254740991
+    },
+    {
+      "arg": "9007199254740992",
+      "error": "E_ID_INVALID"
+    },
+    {
+      "arg": "0",
+      "error": "E_ID_INVALID"
+    },
+    {
+      "arg": "-1",
+      "error": "E_ID_INVALID"
+    },
+    {
+      "arg": "01",
+      "error": "E_ID_INVALID"
+    },
+    {
+      "arg": "1.0",
+      "error": "E_ID_INVALID"
+    },
+    {
+      "arg": "1e3",
+      "error": "E_ID_INVALID"
+    },
+    {
+      "arg": "abc",
+      "error": "E_ID_INVALID"
+    },
+    {
+      "arg": " 1",
+      "error": "E_ID_INVALID"
+    },
+    {
+      "arg": "1 ",
+      "error": "E_ID_INVALID"
+    },
+    {
+      "arg": "",
+      "error": "E_ID_INVALID"
+    },
+    {
+      "arg": "１",
+      "error": "E_ID_INVALID"
+    },
+    {
+      "arg": "0x1",
+      "error": "E_ID_INVALID"
+    },
+    {
+      "arg": "+1",
+      "error": "E_ID_INVALID"
+    }
+  ]
+}

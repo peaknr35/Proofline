@@ -1,0 +1,11 @@
+todo - a small to-do list kept in a JSON file
+
+Usage:
+  todo add <title...>      add a task
+  todo list                show all tasks
+  todo done <number>       mark a task done
+  todo remove <number>     delete a task (cannot be undone)
+  todo serve [--port <n>]  show the list as a web page at http://127.0.0.1:<n>/ (default 7070)
+  todo help                show this help
+
+Tasks are kept in todo.json in your home folder, or in the file named by TODO_FILE.
