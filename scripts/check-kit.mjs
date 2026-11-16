@@ -72,10 +72,13 @@ function kitFiles(root) {
 function versions(root) {
   const found = {
     'SKILL.md title': read(root, 'SKILL.md').match(/^# .*\((v[\d.]+) candidate\)/m)?.[1],
-    'README.md title': read(root, 'README.md').match(/^# .*\((v[\d.]+) candidate\)/m)?.[1],
     'UNIVERSAL-PROMPT.md title': read(root, 'UNIVERSAL-PROMPT.md').match(/^# .*\((v[\d.]+) candidate\)/m)?.[1],
     'README.md skill table': read(root, 'README.md').match(/^\| `proofline-build`.*\| (v[\d.]+) candidate/m)?.[1],
+    'README.md status': read(root, 'README.md').match(/Status, plainly\.\*\* (v[\d.]+) is a candidate/)?.[1],
   };
+  // The README title may leave the version out; if it carries one, it must agree too.
+  const readmeTitle = read(root, 'README.md').match(/^# .*\((v[\d.]+) candidate\)/m)?.[1];
+  if (readmeTitle) found['README.md title'] = readmeTitle;
   const values = new Set(Object.values(found));
   if (values.size === 1 && !values.has(undefined)) return [];
   return [Object.entries(found).map(([k, v]) => `${k}: ${v ?? 'none'}`).join(' · ')];

@@ -43,7 +43,7 @@ test('the kit as it is passes every check', () => {
 });
 
 const BREAKS = [
-  ['K1', 'a title with a different version', (d) => change(d, 'README.md', (s) => s.replace(/\(v[\d.]+ candidate\) - portable kit/, '(v9.9 candidate) - portable kit'))],
+  ['K1', 'a README that states a different version', (d) => change(d, 'README.md', (s) => s.replace(/(Status, plainly\.\*\* )v[\d.]+/, '$1v9.9'))],
   ['K2', 'a self-test check removed without updating the README', (d) => change(d, 'KIT-SELFTEST.md', (s) => s.split('\n').filter((l) => !l.startsWith('| 20 |')).join('\n'))],
   ['K3', 'a compact prompt that grew past its stated length', (d) => change(d, 'COMPACT-PROMPT.txt', (s) => s.trim() + ' Also remember to be thorough and careful in all things at every single step.')],
   ['K4', 'a link to a template that does not exist', (d) => change(d, 'README.md', (s) => s + '\nSee `templates/NOT-A-FILE.md`.\n')],

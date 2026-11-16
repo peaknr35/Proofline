@@ -87,7 +87,34 @@ def main():
             z.writestr(path, entries[path].replace("\r\n", "\n"))
     print(f"wrote {os.path.relpath(OUT, ROOT)}: proofline {v}, {len(entries)} files, "
           f"{os.path.getsize(OUT):,} bytes")
+    return entries
+
+
+def install(entries, target):
+    """Write the four skill folders into a skills folder, replacing earlier copies of them."""
+    target = os.path.abspath(os.path.expanduser(target))
+    names = sorted({p.split("/")[1] for p in entries if p.startswith("skills/")})
+    for name in names:
+        folder = os.path.join(target, name)
+        if os.path.isdir(folder):
+            shutil.rmtree(folder)
+    for path, text in entries.items():
+        if not path.startswith("skills/"):
+            continue
+        dest = os.path.join(target, *path.split("/")[1:])
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        with io.open(dest, "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(text.replace("\r\n", "\n"))
+    print(f"installed {', '.join(names)} into {target}")
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    import shutil
+    parser = argparse.ArgumentParser(description="Package Proofline as a plugin zip.")
+    parser.add_argument("--install", metavar="SKILLS_DIR",
+                        help="also write the four skill folders into this skills folder, e.g. ~/.claude/skills")
+    args = parser.parse_args()
+    built = main()
+    if args.install:
+        install(built, args.install)
