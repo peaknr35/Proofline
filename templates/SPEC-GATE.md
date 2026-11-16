@@ -6,11 +6,18 @@ Read the contract the way a compiler reads code: where it is silent, do not gues
 - **N/A** - the project has no such thing (say why in a few words).
 - **OPEN** - the contract is silent or can be read two ways.
 
-One OPEN on a line that applies means the contract is `UNDERSPECIFIED`. No builder starts. Each OPEN goes to "ask or assume" at the bottom, gets one answer, a fixture, and a row in the interpretation register; then the gate is run again.
+One OPEN on a line that applies means the contract is `UNDERSPECIFIED`. No builder starts. Each OPEN goes to "ask or assume" at the bottom and gets one answer, a fixture where one can be written, and a row in the interpretation register.
+
+How the gate ends (a thorough reader can always find one more corner):
+
+- **Depth**, set by the Lead in the packet. `everyday`: personal or internal tool, no money, no one else's data; a gap counts only if a real user of this tool could plausibly meet it in normal use. `adversarial`: public, paid, security-sensitive or holding other people's data; hostile input and rare failures count too. Anything below the depth goes under **Known limits**, not OPEN.
+- **ASSUME items close without another run.** The Lead's recorded decision closes them.
+- **Run 1 is a full read. Every later run is a verification run**: check each earlier OPEN is closed, and read only the text that changed. Do not re-probe unchanged text.
+- **The gate is under the repair cap.** Each contract revision after a failed run is one repair; runs cost none. A first draft plus two repairs, then the Lead stops and brings the person the evidence and the options.
 
 Who runs it: someone who did not write the contract (a fresh context), given only SPEC.md and the fixtures. If that is not possible, the Lead runs it and labels the result `SELF-REVIEW`.
 
-Project: · Contract version: · Run by: · Fresh context or SELF-REVIEW: · Date:
+Project: · Contract version: · Run by: · Fresh context or SELF-REVIEW: · Date: · Depth: everyday / adversarial · Run: full (run 1) / verification (later runs; name the earlier result checked)
 
 ## A. Every piece of text that comes in (titles, names, messages, file contents)
 
@@ -82,15 +89,22 @@ List every soft word in the request or the contract: smooth, safe, simple, fast,
 
 For each OPEN:
 
-| # | The gap | Would a different answer change what a user sees, what is stored, money, security, or something hard to undo? | So | The one answer | Fixture added | Register row |
-|---|---|---|---|---|---|---|
+| # | The gap | Could the person reasonably choose differently from the Lead's likely answer? | Would that change what a user sees, what is stored, money, security, or something hard to undo? | So: ASK only if both are yes | The one answer | Fixture added | Register row |
+|---|---|---|---|---|---|---|---|
 
-- **Yes → ask.** Put all such questions to the person in one batch, each with the choices, the one you recommend and why. Wait.
-- **No → assume.** The Lead picks, writes it in the interpretation register marked `ASSUMED BY LEAD`, and shows the list at approval so the person can overrule it.
+- **Both yes → ask.** Put all such questions to the person in one batch, each with the choices, the one you recommend and why. Decisions of the same kind go in the same question. Wait.
+- **Otherwise → assume.** The Lead picks, writes it in the interpretation register marked `ASSUMED BY LEAD`, and shows the list at approval so the person can overrule it.
 - A builder never assumes on anything shared. It stops that part and reports.
+
+## Known limits
+
+What the reader noticed below the chosen depth. Each becomes a stated limit in the contract; none blocks.
+
+| Noticed | Why it is below the depth |
+|---|---|
 
 ## Result
 
-`PASS` (no OPEN left) · `UNDERSPECIFIED` (list the lines). Asked: <count>. Assumed by Lead: <count>.
+`PASS` (no OPEN left at this depth) · `UNDERSPECIFIED` (list the lines). Asked: <count>. Assumed by Lead: <count>. Known limits: <count>.
 
 This gate shows the contract answers these questions. It does not show the list of questions is complete: when a build stalls on a gap the gate missed, add the question here (as a PROPOSED change).

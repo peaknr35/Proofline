@@ -4,6 +4,7 @@ How the pieces connect, what is happening now, and what to load for each kind of
 
 ## Current state (the only place this is kept; update it when it changes)
 - **Release:** <version or tag, where it runs, frozen or open>
+- **Run it:** <the one command to run it, and the one to test it, or "not written yet">
 - **Build:** contract <SPEC version>, last verified <date> (see `build/` and the final report)
 - **Evidence:** <what is MEASURED vs PLANNED vs SIMULATED; "no real users or payments yet" if true>
 - **On hold:** <items and what unblocks each>

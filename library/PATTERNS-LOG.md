@@ -87,6 +87,19 @@ Also give each pattern a type: safety requirement, correctness invariant, or per
 | S-44 | Tests over the kit's own text: versions, counts, links, rule classes, core rules in every prompt form; each check shown failing | correctness | one local run: the check passed on v2.5, then caught the v2.6 version drift the moment it was made | EXPERIMENTAL | any prompt kit |
 | S-45 | A copied template records its base (kit version and path) so a later change shows as a difference | correctness | DESIGN_RATIONALE | PROPOSED | every project |
 
+## Entries added in v2.7 (from the v2.6 self-test, 2026-11-15; one build; Claude Opus 5.5, desktop app, MULTI-CHAT, size S; none tested since)
+
+| ID | Pattern | Kind | Evidence | Adoption | Applies when |
+|---|---|---|---|---|---|
+| S-46 | The spec gate has a depth (`everyday` / `adversarial`); what falls below it is a stated limit, not OPEN | correctness | one local run: five readers found 10, 4, 1, 3, 3 open lines, many far below what a personal tool needs | PROPOSED | every contract |
+| S-47 | ASSUME items close by the Lead's recorded decision with no further gate run | correctness | one local run: the owner's AM-03 closed three no-impact items this way and nothing broke later | PROPOSED | every contract |
+| S-48 | Every gate run after the first is a verification run: earlier gaps closed, changed text only | correctness | one local run: the owner's AM-02 verification run confirmed all five earlier items closed, but still found three new ones in the changed text | PROPOSED | every contract |
+| S-49 | The spec gate is under the repair cap; each contract revision after a failed run is a repair | correctness | one local run: the two rules contradicted each other and the Lead chose the loop (check 9 FAIL) | PROPOSED | every contract |
+| S-50 | Ask only when the person could reasonably choose differently and it matters; the same kind of decision is treated alike | performance | one local run: the old rule put stored-data decisions on both sides of the line | PROPOSED | every intake |
+| S-51 | The approval is recorded in build/APPROVAL.md with hashes, never inside the approved file | correctness | one local run: recording the approval in SPEC.md changed the approved bytes | PROPOSED | every approval |
+| S-52 | Builders and QA list non-ASCII characters before each handoff; pinned characters are escapes | correctness | one local run: the file tool wrote raw separator and bidi characters four times, once breaking a pattern | PROPOSED | any contract that pins characters |
+| S-53 | Self-test check 21: plant a mismatch in a handoff so the seam check is exercised | correctness | one local run: with one builder no plant reached the seam check (both runs) | PROPOSED | self-tests |
+
 ## How to promote
 0. Record the model, tool and build size a pattern was proven under. When those change, it goes back to EXPERIMENTAL until rechecked. One failed run is not a pattern, and one passing run is not proof.
 1. Write the entry as PROPOSED with where it came from.

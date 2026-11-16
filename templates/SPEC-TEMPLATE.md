@@ -1,6 +1,6 @@
 # SPEC - <project name>
 
-Status: DRAFT | APPROVED | SUPERSEDED · Version: · Baseline (if upgrading): · Build mode: · Capabilities available here:
+Status: DRAFT | SUPERSEDED · APPROVAL: see `build/APPROVAL.md` (never recorded in this file: editing it would change the bytes the approval covers) · Version: · Baseline (if upgrading): · Build mode: · Capabilities available here:
 
 This file is the single source of truth. If code and this file disagree, this file wins. Builders do not edit it.
 
@@ -112,9 +112,17 @@ ICM foundation (router, root and folder `CONTEXT.md`, `_shared/`, `_templates/`,
 Soft words from the request (smooth, safe, simple, fast, "when possible"): each one turned into a criterion ID, or moved to non-goals.
 
 ## 15. Approval
-Spec gate (`templates/SPEC-GATE.md`): PASS / UNDERSPECIFIED · run by · fresh context or SELF-REVIEW · asked: · assumed by Lead (shown to the person):
+Spec gate (`templates/SPEC-GATE.md`): PASS / UNDERSPECIFIED · depth · runs (full, then verification) · run by · fresh context or SELF-REVIEW · asked: · assumed by Lead (shown to the person): · known limits:
 
-Decision · confirmed by · contract version · date · conditions. Not approvable while the gate is UNDERSPECIFIED.
+Not approvable while the gate is UNDERSPECIFIED. The approval itself is recorded in `build/APPROVAL.md`, not here:
+
+```
+Decision: APPROVED · confirmed by: <who, and their words> · date: · conditions:
+Contract version: <n>
+SHA-256 of the approved files (any change voids the approval):
+<hash>  SPEC.md
+<hash>  contract/fixtures/<each file>
+```
 
 ## 16. Upgrade amendment (when applicable)
 Baseline stays valid except: overrides · new requirements · migration · compatibility · regression cases · rollback.

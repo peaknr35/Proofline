@@ -9,7 +9,7 @@ The Lead scaffolds this right after the contract is approved (Phase 1b), before 
 | Template | Goes to | Layer | Size limit |
 |---|---|---|---|
 | `AGENTS.md` | project root | 0 - where am I, route by intent | under 50 lines |
-| `CLAUDE.md` | project root | one-line pointer to AGENTS.md, for tools that read that name | 1 line |
+| `CLAUDE.md` | project root | one-line pointer to AGENTS.md, for tools that read that name. An agent that does not expand `@` imports spends one read on it and should go straight to AGENTS.md | 1 line |
 | `CONTEXT-ROOT.md` | project root as `CONTEXT.md` | 1 - current state, how areas connect, what to load per task | under 80 lines |
 | `CONTEXT-FOLDER.md` | each working folder as `CONTEXT.md` | 2 - that folder's contract | 25-80 lines |
 | `_shared/product-facts.md` | `_shared/` | 3 - what is actually built (the only source for public copy) | keep current |

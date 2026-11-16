@@ -3,7 +3,7 @@ name: proofline-build
 description: Build or upgrade a working, tested, packaged system from an idea using a contract that is written fixtures-first, passes a completeness gate and is approved before any code, an ICM workspace foundation (router, per-folder contracts, shared facts) that any fresh agent can walk, work split into independently checkable units (whole features where possible) with the fewest scoped builders that fit, fresh independent QA, bounded repair, and a reuse library that makes each next project faster. Model-independent. Formerly five-agent-build. Use for "use proofline", "use five-agent-build", "run five agents", "full stack, everything works, not a demo", contract-first builds, or upgrading an existing project the same way.
 ---
 
-# Proofline Build (v2.6 candidate)
+# Proofline Build (v2.7 candidate)
 
 Turn an idea into a verified deliverable, delivered as an ICM workspace, with the least avoidable rework. Optimize **time to verified delivery**, not code volume or agent count.
 
@@ -113,7 +113,7 @@ A role loads only what its packet names, and receives selected upstream artifact
 4. Choose a simple stack and record why.
 5. Branding: if ownership or permission is unclear, the product gets a neutral name; personal-use material lives in one marked file and is excluded from release.
 6. **A short brief is fine.** One paragraph is enough to start. Break it into the separate things it asks for, then list every soft word in it (smooth, safe, simple, fast, "when possible", "etc."). Each soft word becomes a check someone can run, or moves to non-goals. None goes into the contract as it is.
-7. **Ask or assume.** Ask the person when a different answer would change what a user sees, what is stored, money, security, or something hard to undo. Ask once, in one batch, each question with its choices, the one you recommend (acceptable in one word) and one sentence on why it matters. A question whose answer depends on an earlier answer waits for it; independent questions go together. Do not start work while questions are open, and do not ask what a probe or the supplied material already answers. For everything else the Lead decides, writes the decision in the interpretation register marked `ASSUMED BY LEAD`, and shows the list at approval.
+7. **Ask or assume.** Ask the person only when both hold: they could reasonably choose differently from your recommendation, **and** the answer changes what a user sees, what is stored, money, security, or something hard to undo. Most gaps fail the first test: there is one sensible answer, so decide it. Decisions of the same kind get the same treatment: if one rule about stored data is asked, every rule of that kind goes in the same question. Ask once, in one batch, each question with its choices, the one you recommend (acceptable in one word) and one sentence on why it matters. A question whose answer depends on an earlier answer waits for it; independent questions go together. Do not start work while questions are open, and do not ask what a probe or the supplied material already answers. For everything else the Lead decides, writes the decision in the interpretation register marked `ASSUMED BY LEAD`, and shows the list at approval.
 8. **Coming from Shark Tank Proof.** If the project has a `founder/` folder, the intake is `founder/build-brief.md`, written by that pack's `/kill-or-build` (`templates/FROM-SHARK-TANK-PROOF.md`). The verdict at the top of the brief limits the build: Incomplete or Not yet, build nothing; Unproven, build only the small test asset the brief names; Profitable, build version 1 of what the real buyer bought. Every fact keeps its claim id and label. A `SIMULATED` or `PLANNED` number the build leans on becomes a setting, never a constant. Customer-facing words come only from the brief's "words the product may say". `founder/` is read-only. At delivery the final report carries a "Back to the ledger" section; built is not sold.
 
 ## Phase 1 - Contract and approval (Lead)
@@ -124,9 +124,15 @@ Write `SPEC.md` from `templates/SPEC-TEMPLATE.md`. It defines observable accepta
 
 1. **Golden fixtures first.** Before the sentences, write valid and invalid examples of every shared payload and file, in one place. For every limit, three fixtures: at the limit, one under, one over. Every invalid fixture names the error it must produce. Every builder tests against the same fixtures: if two builders pass them, they agree, whatever each thought the sentence meant.
 2. **The error table.** Every way it can fail gets a name, an exit code or status, and the exact message.
-3. **The prose**, and each rule in it points at the fixture that pins it. A rule with no fixture is a rule two builders will read two ways. "Titles are at most 200 characters" is not a rule until a fixture shows what a character is.
+3. **The prose**, and each rule in it points at the fixture that pins it. A rule with no fixture is a rule two builders will read two ways. "Amounts are at most 1000" is not a rule until a fixture shows the unit and whether 1000 itself is allowed.
 4. **The surface, closed.** List every command, flag, route, screen action, setting, output format and file the product writes. What is not listed is not built (rule 15).
-5. **The spec gate** (`templates/SPEC-GATE.md`). Someone who did not write the contract goes through it line by line: text, numbers, lists and outputs, failures, state and cleanup, the closed surface, soft words. Each line is PINNED, N/A or OPEN. One OPEN means `UNDERSPECIFIED`: no builder starts. Each OPEN goes through ask-or-assume, gets one answer, a fixture and a register row, and the gate runs again. The gate shows these questions are answered; it does not show the list of questions is complete.
+5. **The spec gate** (`templates/SPEC-GATE.md`). Someone who did not write the contract goes through it line by line: text, numbers, lists and outputs, failures, state and cleanup, the closed surface, soft words. Each line is PINNED, N/A or OPEN. One OPEN means `UNDERSPECIFIED`: no builder starts. A thorough reader can always find one more corner, so the gate has four rules that make it end:
+   - **Depth.** The Lead sets it in the reader's packet. `everyday` for personal and internal tools with no money and no one else's data: a gap counts only if a real user of this tool could plausibly meet it in normal use. `adversarial` for anything public, paid, security-sensitive or holding other people's data: hostile input and rare failures count too. What the reader notices below the depth goes under **Known limits**, not OPEN, and the contract states it as a limit.
+   - **Each OPEN is tagged ASK or ASSUME** (Phase 0 step 7). An ASSUME item is closed by the Lead's recorded decision, with a fixture where one can be written, and needs no further gate run. Only ASK items go to the person.
+   - **Run 1 reads everything; every later run is a verification run.** It checks that each earlier OPEN is closed and reads only the text that changed. It does not re-probe unchanged text.
+   - **The spec gate is a gate under the repair cap.** Each contract revision after a failed gate run is one repair; the runs are checks and cost none. A first draft plus two repairs, then stop and bring the person the evidence, the likely cause and the options.
+
+   `PASS` means no OPEN line at the chosen depth. The gate shows these questions are answered; it does not show the list of questions is complete.
 
 Also:
 
@@ -136,7 +142,7 @@ Also:
 - **Untrusted text, every surface.** Wherever text from users or files is shown (page, terminal, log, file name, message), the contract says how it is made safe there. Escaping for a web page does not cover a terminal.
 - Pre-flight: every criterion has a check; every interface action has a real backend or an explicit "out of scope"; approval operations are outside worker authority.
 - Include the **workspace map** (SPEC section 4): every folder, its one job, and who owns its `CONTEXT.md`.
-- Get explicit approval, with the gate result and the `ASSUMED BY LEAD` list in front of the person. This is the first of the two places a person's attention pays most (direction); the second is the final review (does the result match what was decided). Middle stages need less when they sit between a firm contract and firm fixtures.
+- Get explicit approval, with the gate result and the `ASSUMED BY LEAD` list in front of the person. **Record the approval outside the contract**, in `build/APPROVAL.md`: the decision, who confirmed it, the date, and the SHA-256 of `SPEC.md` and of every fixture exactly as approved. Never edit `SPEC.md` to record its own approval: that changes the bytes the approval covers. Its status line says `APPROVAL: see build/APPROVAL.md` from the first draft. Any later change to a hashed file voids the approval. This is the first of the two places a person's attention pays most (direction); the second is the final review (does the result match what was decided). Middle stages need less when they sit between a firm contract and firm fixtures.
 - For upgrades write `SPEC-V2.md`: baseline reference, explicit overrides, migration, regression requirements. **Record the baseline first**: run the existing tests and save the result per test before changing anything.
 
 ## Phase 1b - Scaffold the ICM foundation (Lead, before any builder starts)
@@ -150,7 +156,7 @@ From `templates/icm/` (see its README), write: `AGENTS.md` router and `CLAUDE.md
 - Choose the form from the archetype (pipeline, record library, knowledge bundle or app). Three real folders beat seven imagined ones.
 - For upgrades, audit the existing structure first (inventory only: complete, partial, missing), then add what is missing without moving working files.
 
-Builders receive their folder's `CONTEXT.md` in their packet and keep it accurate as they build (commands, real test counts, layer rules, what to avoid). The Lead owns the router, root `CONTEXT.md` and `_shared/`.
+Builders receive their folder's `CONTEXT.md` in their packet and keep it accurate as they build (commands, real test counts, layer rules, what to avoid). The Lead owns the router, root `CONTEXT.md` and `_shared/`. Once a unit is accepted, the Lead may edit that unit's folder `CONTEXT.md` too, and records each such edit in the acceptance note.
 
 ## Phase 2 - Plan and build
 
@@ -158,7 +164,7 @@ Write the plan from `templates/PLAN-TEMPLATE.md`: shared foundations first, then
 
 Each worker packet contains: contract version, role prompt (`templates/AGENT-PROMPTS.md`), its responsibility (what it receives, what it owes, what it delivers, who receives it, when it is done), allowed paths, the references and upstream artifacts it needs, available tools and limits, acceptance criteria, and `templates/HANDOFF-TEMPLATE.md`. List each file in the packet with why it is there and whether it is a rule to follow or data to work on.
 
-Workers: touch only owned paths; test with their own fixtures plus the golden fixtures; use contract-based fakes at unfinished seams (a fake proves local behavior, not integration); stop and report on a blocking ambiguity instead of resolving it silently; build nothing the contract does not list (an extra flag, format or message is not a bonus, it is something another part may trip on), and report in the handoff anything that went beyond it; remove every temp file and folder their tests create; finish with a handoff that lists every material interpretation, every shared interface as built, and every rule about a shared format that no fixture pins down (those are where two parts quietly disagree).
+Workers: touch only owned paths; test with their own fixtures plus the golden fixtures; use contract-based fakes at unfinished seams (a fake proves local behavior, not integration); stop and report on a blocking ambiguity instead of resolving it silently; build nothing the contract does not list (an extra flag, format or message is not a bonus, it is something another part may trip on), and report in the handoff anything that went beyond it; remove every temp file and folder their tests create; before each handoff, list every non-ASCII character in code and contract files, because any character the contract pins (control, separator, bidi) must be written as an escape, never raw (file-writing tools sometimes write it raw, and a raw one can break a pattern silently); finish with a handoff that lists every material interpretation, every shared interface as built, and every rule about a shared format that no fixture pins down (those are where two parts quietly disagree).
 
 **Status vocabulary** (every handoff and report carries exactly one): `progress` (still working; internal, notifies nobody) · `waiting` (turn done, nothing needed from a person) · `ready` (implemented, self-reviewed, its relevant checks run and passed) · `blocked` (cannot continue until a person acts) · `failed` (an error stopped it) · `dropped` (nothing to do: does not reproduce, already done elsewhere, not a defect; ends without a message).
 
@@ -201,7 +207,7 @@ Classify every finding: implementation bug, contract ambiguity, environment limi
 ## Bounded adaptation
 
 - A check never consumes a repair.
-- Per failed gate: one initial attempt plus at most two repairs. Per build: at most two plan revisions.
+- Per failed gate: one initial attempt plus at most two repairs. Per build: at most two plan revisions. **This includes the spec gate**: each contract revision after a failed gate run is a repair. A rule elsewhere that says "run the check again" never lifts the cap.
 - At the limit, stop and report the evidence, likely cause, options and the decision needed. No extra attempts under new stage names.
 - Budgets change only through an approved amendment.
 - **Impact stops come first (rule 18).** A repair that would change a public interface, a module's job or a product decision is not a repair: stop and send it to the contract, without spending the repair. The repair cap is for effort spent on the same problem; the impact stop is for problems the builder has no authority to settle.

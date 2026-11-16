@@ -1,4 +1,4 @@
-# Proofline (v2.6 candidate) - portable kit
+# Proofline (v2.7 candidate) - portable kit
 
 A model-independent method for turning an idea into a working, tested, packaged system, and for making each next project faster than the last. Plain text; nothing depends on one vendor.
 
@@ -10,7 +10,7 @@ Proofline was called Five-Agent Build through v2.4. The old name pointed at the 
 
 | Skill | Was | Job | Status |
 |---|---|---|---|
-| `proofline-build` (this folder's `SKILL.md`) | `five-agent-build` | the full build method | v2.6 candidate, not yet re-run |
+| `proofline-build` (this folder's `SKILL.md`) | `five-agent-build` | the full build method | v2.7 candidate, not yet re-run; v2.6 ran once and failed one mandatory gate |
 | `proofline-plan` (`skills/proofline-plan/`) | `workflow-orchestration` | decide whether work needs organizing, then split and staff it | experimental: followed once, no benefit shown |
 | `proofline-audit` (`skills/proofline-audit/`) | `agent-team-audit` | test whether each agent in a team earns its place | written, not yet tried |
 | `proofline-runtime` (`skills/proofline-runtime/`) | `agent-runtime-design` | design the software that enforces a workflow | written, not yet tried |
@@ -29,7 +29,20 @@ Both kits use the same four labels (MEASURED, THEY SAID IT, PLANNED, SIMULATED),
 
 Each kit works without the other. This join is written and not yet run on a real project.
 
-## What changed in v2.6 (candidate: not yet run)
+## What changed in v2.7 (candidate: not yet run)
+
+Fixes for the defects the v2.6 self-test exposed (record: `selftest-run/tasklet-v2.6/GRADES.md`, M1-M10). Each rests on one run, so each is PROPOSED in `library/PATTERNS-LOG.md`.
+
+- **The spec gate now ends** (M1). Four rules: a depth set per project (`everyday` or `adversarial`), with what falls below it written as stated limits; ASSUME items closed by the Lead's recorded decision with no further run; every run after the first is a verification run (earlier gaps closed, changed text only); and the spec gate is under the repair cap.
+- **One rule, not two** (M2). Each contract revision after a failed gate run is a repair. "Run the check again" never lifts the cap.
+- **Ask-or-assume asks less** (M3). Ask only when the person could reasonably choose differently and the answer matters to what they see, store, pay, secure or cannot undo. Decisions of the same kind are treated the same.
+- **The approval lives outside the contract** (M4), in `build/APPROVAL.md`, with the SHA-256 of `SPEC.md` and every fixture as approved.
+- **Raw invisible characters are checked** (M10). Builders and QA list non-ASCII characters before each handoff.
+- **Who may edit a builder's CONTEXT.md after acceptance** (M8): the Lead, recorded in the acceptance note.
+- **Templates** (M9): the root CONTEXT.md carries the run command; the router points there.
+- **The self-test** (M5-M7): how to prepare the Lead's copy without leaking the traps; the kit's worked example no longer uses the 200-character title that check 17 probes; clearer probes for checks 9, 10, 14, 17 and 20; and **check 21**, which plants a mismatch in a handoff so the seam check is actually exercised.
+
+## What changed in v2.6 (candidate: run once on 2026-11-15; failed the repair-limit gate)
 
 From reading [dsh-superagent-prototype](https://github.com/deepseek-ai/dsh-superagent-prototype), the working code behind the "Exploring Super-agent Design" article. Ideas only, in this kit's own words; no code was copied.
 
@@ -68,7 +81,7 @@ A smaller release. No new rules; three design changes and a shorter prompt.
 - **Self-test qualification has mandatory gates.** Every check is PASS, FAIL or NOT TESTED; six gates block qualification; the total is descriptive only. The 2026-11-13 run is recorded as 13 passed, 3 not tested: qualification incomplete.
 - **Shorter compact prompt.**
 
-Status changes only from observed results: v2.6 stays a candidate until Tasklet is re-run on it with all 20 checks exercised.
+Status changes only from observed results: v2.7 stays a candidate until Tasklet is re-run on it with all 21 checks exercised.
 
 ## What changed in v2.3
 
@@ -140,7 +153,7 @@ Drawn from the nine papers in `library/` (what each gave and how strong its evid
 | `scripts/check-kit.mjs` | Checks the kit's own text: one version everywhere, counts that agree, links that resolve, every rule classified, core rules in every prompt form. `node scripts/check-kit.mjs`; `node --test scripts/check-kit.test.mjs` proves each check can fail |
 | `skills/` | The three companion skills: `proofline-plan`, `proofline-audit`, `proofline-runtime` |
 | `selftest-run/` | Records of the two self-test runs, kept as they were made |
-| `KIT-SELFTEST.md` | A 20-point test to run once per tool, plus a short probe for builder-only models |
+| `KIT-SELFTEST.md` | A 21-point test to run once per tool, plus a short probe for builder-only models |
 
 ## Loading it
 

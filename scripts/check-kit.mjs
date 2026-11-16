@@ -36,6 +36,10 @@ export const CORE = [
   { rule: 'stop by impact', skill: /stop by impact/i, universal: /stop by impact/i, compact: /stop by impact/i },
   { rule: 'speak only when a person must act or can use a result', skill: /must act or can use a result/i, universal: /must act or can use a result/i, compact: /must act or can use/i },
   { rule: 'never ask for a secret in chat', skill: /never ask for a secret/i, universal: /never ask .*for a secret/i, compact: /no secrets in chat/i },
+  // compact: null means the short form cannot carry this rule; the other two forms must still state it.
+  { rule: 'the spec gate is under the repair cap', skill: /spec gate is a gate under the repair cap/i, universal: /spec gate is under the repair cap/i, compact: /two repairs per failed gate/i },
+  { rule: 'later gate runs verify, they do not re-probe', skill: /every later run is a verification run/i, universal: /every run after the first is a verification run/i, compact: null },
+  { rule: 'approval recorded outside the contract', skill: /build\/APPROVAL\.md/, universal: /build\/APPROVAL\.md/, compact: null },
 ];
 
 const read = (root, rel) => fs.readFileSync(path.join(root, rel), 'utf8').replace(/\r\n/g, '\n');
@@ -159,7 +163,7 @@ function oldNames(root) {
 function coreRules(root) {
   const text = { skill: read(root, 'SKILL.md'), universal: read(root, 'UNIVERSAL-PROMPT.md'), compact: read(root, 'COMPACT-PROMPT.txt') };
   const problems = [];
-  for (const c of CORE) for (const form of ['skill', 'universal', 'compact']) if (!c[form].test(text[form])) problems.push(`${form} prompt does not state: ${c.rule}`);
+  for (const c of CORE) for (const form of ['skill', 'universal', 'compact']) if (c[form] && !c[form].test(text[form])) problems.push(`${form} prompt does not state: ${c.rule}`);
   return problems;
 }
 

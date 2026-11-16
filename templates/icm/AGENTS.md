@@ -14,7 +14,7 @@
 | If you need to | Read first | Then stop at |
 |---|---|---|
 | Know the current state | `CONTEXT.md` § Current state | - |
-| Run it or test it | `<docs/quickstart.md, or "not written yet">` | - |
+| Run it or test it | `CONTEXT.md` § Current state ("Run it"); details in `<README.md or docs/quickstart.md, or "not written yet">` | - |
 | Fix a bug or change code | `<code>/CONTEXT.md` | tests pass, the owner reviews the diff |
 | <Change content> | `<content>/CONTEXT.md` | draft saved, reviewed |
 | Deploy or release | `ops/CONTEXT.md` | the owner approves the release |
