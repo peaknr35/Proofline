@@ -11,3 +11,6 @@ node_modules/
 tasks.json
 *.log
 .env*
+
+# Built plugin zip (rebuild with: python scripts/build-plugin.py)
+dist/

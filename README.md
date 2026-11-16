@@ -151,12 +151,14 @@ Drawn from the nine papers in `library/` (what each gave and how strong its evid
 | `templates/EVIDENCE-CARD.md` | Blank card for any rule that claims to make builds faster |
 | `library/*.pdf` | The papers themselves. Not in the repository (other people's copyright); get them from the links in `library/SOURCES.md` |
 | `scripts/check-kit.mjs` | Checks the kit's own text: one version everywhere, counts that agree, links that resolve, every rule classified, core rules in every prompt form. `node scripts/check-kit.mjs`; `node --test scripts/check-kit.test.mjs` proves each check can fail |
+| `scripts/build-plugin.py` | Packages the four skills as one plugin zip (`dist/proofline-plugin.zip`) for upload. Leaves out the research PDFs, the old nested copy, the build records and these scripts |
 | `skills/` | The three companion skills: `proofline-plan`, `proofline-audit`, `proofline-runtime` |
 | `selftest-run/` | Records of the two self-test runs, kept as they were made |
 | `KIT-SELFTEST.md` | A 21-point test to run once per tool, plus a short probe for builder-only models |
 
 ## Loading it
 
+- **Claude (claude.ai or the desktop app) as a plugin:** run `python scripts/build-plugin.py`, then upload `dist/proofline-plugin.zip` under Plugins → Add → Upload plugin. It installs all four skills (`proofline-build`, `proofline-plan`, `proofline-audit`, `proofline-runtime`). Rebuild and upload again after each change.
 - **Tools with skill folders:** add this folder as a skill.
 - **Coding agents with a project instruction file:** point that file at `SKILL.md`, or copy its body in. Keep the kit separate from each project's `SPEC.md`.
 - **Chat assistants with custom instructions:** paste `UNIVERSAL-PROMPT.md`; attach `SKILL.md` and the templates as files if the tool allows.
