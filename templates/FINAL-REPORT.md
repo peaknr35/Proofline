@@ -2,6 +2,9 @@
 
 Lead with the result. Short enough to read on a phone.
 
+## Needs you now
+Each decision or action only the person can take, one line each, with the recommended answer. Write `Nothing.` when nothing waits. This section comes first because it is the only one that costs the reader something.
+
 ## 1. Built and tested
 What it does · contract version · release-blocking criteria passed (n of n) · actual test results as numbers · remaining blockers.
 Do not write "everything works" unless the evidence covers every requirement.
@@ -20,6 +23,8 @@ For upgrades and repairs: target fixed · target not fixed · new failures (must
 ## 5. Evidence and gaps
 | Capability | Evidence level | Evidence | Gap |
 |---|---|---|---|
+
+A change to what users see needs real Before and After evidence of the same screen and state; After alone is a gap, not evidence.
 
 Levels: IMPLEMENTED (present, not run) · LOCAL TESTED (name the fakes) · INTEGRATION TESTED · END-TO-END TESTED · EXTERNAL VERIFIED · DEPLOYMENT VERIFIED.
 

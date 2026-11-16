@@ -2,6 +2,11 @@
 
 Project: · Build ID: · Contract version: · Plan version: · Mode:
 
+Status: one of `progress` · `waiting` · `ready` · `blocked` · `failed` · `dropped` (definitions in the kit's `SKILL.md`, Phase 2). `ready` means the relevant checks ran and passed, not that the code is written. A partial result is `blocked`, marked as a draft.
+
+## Needs a person
+One concrete question, or `nothing`. The choices, the one recommended (acceptable in one word), why it matters in one sentence, and what is blocked until it is answered. Work it does not block goes on.
+
 ## Files
 | Path | Created / changed | Purpose |
 |---|---|---|

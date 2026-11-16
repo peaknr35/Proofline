@@ -117,6 +117,22 @@ Stage states: `PENDING` → `READY` → `RUNNING` → `VALIDATING` → `REVIEW_R
 
 Honest limit: a move-into-place and an event log are not a database's guarantees, and a key only prevents repeats if the outside service honours it. When the outcome of an outside action is unknown, check what happened before trying again.
 
+**Record first, act second.** Every action the runtime takes after a decision (start a stage, deliver an input, send a message) is written down as pending work before it is done, then marked done. A crash leaves a list of what was promised and not yet done, instead of a guess. Messages to one conversation go out in the order they were queued.
+
+**Derive the waiting state; do not store it.** For anything a person may need to act on, compute "what is it waiting for" from the stored records each time, with a table read top to bottom where the first matching row wins:
+
+| Waiting on | When |
+|---|---|
+| a person: delivery failed | the last attempt to hand it input failed |
+| a person: an answer | it has an open question |
+| a person: review | its last report is `ready` |
+| a person: blocked or failed | its last report is `blocked` or `failed`, and no person has written since |
+| a slot | it has no running worker yet |
+| nothing (idle) | its last report is `waiting`, or its worker ended |
+| the worker | everything else |
+
+Because the state is worked out from the records, a restart cannot leave it wrong, and the panel's "needs a person" list is just the first four rows.
+
 ## Step 7 - One gateway for every tool
 
 No model touches a shell, the file system, the network or a credential directly. Every call goes through a gateway that enforces:
@@ -151,6 +167,13 @@ A model is never the only judge. A judgement check may give a score and a reason
 Where results can be compared mechanically, compare them mechanically. For a repair: target fixed, target not fixed, new failures, failing before and after, newly passing, worked out from test names and results, never from a model's summary.
 
 ## Step 9 - Approvals that mean something
+
+**Who may start work is checked by code, then judged by a model, in that order.** The first layer is deterministic: is the sender on the allowed list, did they address the agent directly, is this a bot on the bot list. Only what passes goes to a model, which judges whether it asks for work and how far it goes. A request from an allowed person addressing the agent is **explicit**; anything else that passes (a bot, an unlisted person's follow-up, a rule the team wrote for unprompted work) is at most **inferred**.
+
+Unprompted work starts in an **observe** mode: the model's judgement is recorded as "would have accepted", and nothing is done. Switch a rule to acting only after a person has read what it would have done.
+
+Every accepted piece of work carries a record of **why it may be done**: who asked, through which channel, under which version of the rules, how strong the basis was (explicit or inferred), and what scope it covers. That record never changes. Wider scope means new work with a new record, not a stretched old one. When the rules change, running work is told, not cancelled, and is checked again against the new rules before it resumes.
+
 
 An approval record ties one person's decision to the hash of the exact content and the hash of the rules in force, with who, when and a comment. Change the content by one byte and the approval is void.
 
@@ -234,4 +257,5 @@ Ask the user only what changes the design: which workflow first, what the tools 
 
 - Steps 2-6 and 8-12, the build order and the list of traps follow a design note, "From ICM Folder Methodology to an Advanced Agent Runtime". It is an architecture plan. It has not been built or measured.
 - The single-tool gateway in step 7 follows "Control Plane as a Tool" (Kandasamy, 2025): a pattern with no evaluation.
+- Record first, act second, the derived waiting state (step 6), and the code-then-model admission check, observe mode and the record of why work may be done (step 9) follow **dsh-superagent-prototype** (DeepSeek Harness Team, MIT, github.com/deepseek-ai/dsh-superagent-prototype). It is the working code behind the article "Exploring Super-agent Design". Unlike the design note, it is built: a proactive coding agent for one repository, with about 60 test files. It is still a research prototype by its authors' own account, it is tied to DeepSeek Harness, its authors say parts of the article are not implemented in it, and it reports no evaluation. Read its numbered `docs/` in order before copying a pattern. It is the best worked example of this skill's steps, not proof they work.
 - The boundaries here (no self-granted authority, content-bound approvals, untrusted data stays data) are safety rules kept on design reasons. The claims about what to build when are judgement, not results. Say so when you present the design.

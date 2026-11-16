@@ -1,4 +1,4 @@
-# Proofline (v2.5 candidate) - portable kit
+# Proofline (v2.6 candidate) - portable kit
 
 A model-independent method for turning an idea into a working, tested, packaged system, and for making each next project faster than the last. Plain text; nothing depends on one vendor.
 
@@ -10,7 +10,7 @@ Proofline was called Five-Agent Build through v2.4. The old name pointed at the 
 
 | Skill | Was | Job | Status |
 |---|---|---|---|
-| `proofline-build` (this folder's `SKILL.md`) | `five-agent-build` | the full build method | v2.5 candidate, not yet re-run |
+| `proofline-build` (this folder's `SKILL.md`) | `five-agent-build` | the full build method | v2.6 candidate, not yet re-run |
 | `proofline-plan` (`skills/proofline-plan/`) | `workflow-orchestration` | decide whether work needs organizing, then split and staff it | experimental: followed once, no benefit shown |
 | `proofline-audit` (`skills/proofline-audit/`) | `agent-team-audit` | test whether each agent in a team earns its place | written, not yet tried |
 | `proofline-runtime` (`skills/proofline-runtime/`) | `agent-runtime-design` | design the software that enforces a workflow | written, not yet tried |
@@ -28,6 +28,23 @@ Proofline was called Five-Agent Build through v2.4. The old name pointed at the 
 Both kits use the same four labels (MEASURED, THEY SAID IT, PLANNED, SIMULATED), so a fact keeps its label across the handoff. A simulated price becomes a setting, not a constant. Customer-facing words come only from claims the founder's ledger allows in public. At delivery, the final report lists what the product now does so the founder can log it. Built is not sold: only a real buyer changes the verdict.
 
 Each kit works without the other. This join is written and not yet run on a real project.
+
+## What changed in v2.6 (candidate: not yet run)
+
+From reading [dsh-superagent-prototype](https://github.com/deepseek-ai/dsh-superagent-prototype), the working code behind the "Exploring Super-agent Design" article. Ideas only, in this kit's own words; no code was copied.
+
+- **Attention is the scarcest input** (rule 16). Speak only when a person must act or can use a result. Probe the environment instead of asking. Each question comes with a recommended answer and one sentence on why.
+- **No secrets in chat** (rule 17). Sign-ins and keys go in one message of exact commands for the person's own terminal.
+- **Stop by impact, not by effort** (rule 18). A change to an interface, a module's job or a product decision goes back to the contract and spends no repair. Size and failing tests are not reasons to stop.
+- **One report status** in every handoff: progress, waiting, ready, blocked, failed or dropped. Ready means checks passed. A **Needs a person** field holds the one question.
+- **Honest evidence.** Examples show format, never facts. A change users see needs a real Before and After.
+- **The final report and STATE.md open with what needs a person**, and say "Nothing." when nothing does.
+- **Copied templates record their base.**
+- **A check for the kit itself** (`scripts/check-kit.mjs`): nine checks over the kit's own text, each shown failing on a broken copy. It caught this version's own drift the moment it happened.
+- **Self-test check 20**: stop by impact.
+- **`proofline-runtime`** gains record-first-act-second, a derived waiting state, the code-then-model admission check and observe mode, with the prototype as its worked example.
+
+The prototype is a research build with tests and no evaluation, so every rule from it is design rationale, and the two places it disagrees with this kit are written down in `library/SOURCES.md`.
 
 ## What changed in v2.5 (candidate: not yet run; it replaces the v2.4 candidate, which was never run either)
 
@@ -51,7 +68,7 @@ A smaller release. No new rules; three design changes and a shorter prompt.
 - **Self-test qualification has mandatory gates.** Every check is PASS, FAIL or NOT TESTED; six gates block qualification; the total is descriptive only. The 2026-11-13 run is recorded as 13 passed, 3 not tested: qualification incomplete.
 - **Shorter compact prompt.**
 
-Status changes only from observed results: v2.5 stays a candidate until Tasklet is re-run on it with all 19 checks exercised.
+Status changes only from observed results: v2.6 stays a candidate until Tasklet is re-run on it with all 20 checks exercised.
 
 ## What changed in v2.3
 
@@ -104,7 +121,7 @@ Drawn from the nine papers in `library/` (what each gave and how strong its evid
 |---|---|
 | `SKILL.md` | The full method, in skill format |
 | `UNIVERSAL-PROMPT.md` | Paste into any chat model as instructions or the first message |
-| `COMPACT-PROMPT.txt` | About 1,106 characters (count it in your own tool), for short instruction boxes; a summary, not the whole method |
+| `COMPACT-PROMPT.txt` | About 1,230 characters (count it in your own tool), for short instruction boxes; a summary, not the whole method |
 | `templates/INTAKE.md` | Fill in once to start a project without question rounds |
 | `templates/FROM-SHARK-TANK-PROOF.md` | How to start from a Shark Tank Proof build brief, and what to hand back |
 | `templates/SPEC-TEMPLATE.md` | The contract |
@@ -120,9 +137,10 @@ Drawn from the nine papers in `library/` (what each gave and how strong its evid
 | `library/EVIDENCE-CARDS.md` | Evidence cards for the five rules that carry the most weight, and what to test first |
 | `templates/EVIDENCE-CARD.md` | Blank card for any rule that claims to make builds faster |
 | `library/*.pdf` | The papers themselves. Not in the repository (other people's copyright); get them from the links in `library/SOURCES.md` |
+| `scripts/check-kit.mjs` | Checks the kit's own text: one version everywhere, counts that agree, links that resolve, every rule classified, core rules in every prompt form. `node scripts/check-kit.mjs`; `node --test scripts/check-kit.test.mjs` proves each check can fail |
 | `skills/` | The three companion skills: `proofline-plan`, `proofline-audit`, `proofline-runtime` |
 | `selftest-run/` | Records of the two self-test runs, kept as they were made |
-| `KIT-SELFTEST.md` | A 19-point test to run once per tool, plus a short probe for builder-only models |
+| `KIT-SELFTEST.md` | A 20-point test to run once per tool, plus a short probe for builder-only models |
 
 ## Loading it
 
@@ -177,4 +195,4 @@ Full shape and rules: `templates/icm/README.md`. `build/STATE.md` is a checkpoin
 - Most rules about speed rest on other people's measurements or on design arguments, not on builds run with this kit. `library/SOURCES.md` and `library/PATTERNS-LOG.md` say which is which.
 - `selftest-run/` is the record of the self-test build. Leave it out when you install the kit as a skill.
 - It is not enough alone for agents talking live to each other, many users at once, or branching with no person in between.
-- The method was drawn from two real builds in one agent environment. v2.2 was run end to end once, on one small project, in one tool, graded mostly by the Lead itself: 13 checks passed and 3 were not tested, two of them mandatory gates, so qualification is incomplete. v2.3, v2.4 and the v2.5 candidate change what that run found and have not been re-run. Nothing here has been compared against another way of working, so no speed claim is made. Run `KIT-SELFTEST.md` in your own tool before relying on it.
+- The method was drawn from two real builds in one agent environment. v2.2 was run end to end once, on one small project, in one tool, graded mostly by the Lead itself: 13 checks passed and 3 were not tested, two of them mandatory gates, so qualification is incomplete. v2.3 to the v2.6 candidate change what that run found and have not been re-run. Nothing here has been compared against another way of working, so no speed claim is made. Run `KIT-SELFTEST.md` in your own tool before relying on it.

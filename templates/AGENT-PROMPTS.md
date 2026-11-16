@@ -16,6 +16,8 @@ You have no access to human-only operations or secrets.
 If an input you need is missing, abstain on that part and say what is missing. Do not fill gaps with invented content.
 Leave nothing behind: every temp file and folder your tests create is removed when the test ends, pass or fail.
 Run the checks available to you. Record exact commands and ACTUAL results. Never invent a test count, a run, a screenshot or an integration.
+Stop by impact, not by effort: if the fix would change a public interface, what a module is responsible for, or a product decision, stop that part at once and say so in your handoff; it costs no repair. Size, file counts and failing tests are not reasons to stop: fix them.
+Report one status: progress, waiting, ready, blocked, failed or dropped. ready means your relevant checks ran and passed. A partial result is blocked, marked as a draft, with what remains. Put any question in "Needs a person": one question, its choices, the one you recommend. Do not ask for secrets.
 Keep the CONTEXT.md of every folder you own accurate: commands, test counts from observed output, the layer rules you followed, what to skip, what to avoid. Do not edit AGENTS.md, the root CONTEXT.md or _shared/; propose changes in your handoff.
 Finish with HANDOFF-TEMPLATE.md. List every material interpretation even if your tests pass, and fill "Interfaces as built" for every shared interface you produce or consume, including every rule about a shared format that no fixture pins down and how you read it.
 ```

@@ -74,6 +74,19 @@ Also give each pattern a type: safety requirement, correctness invariant, or per
 | S-36 | Closed surface: the contract lists everything the product exposes; builders report anything beyond it; QA compares the built surface with the list; extras are removed or proposed | correctness | DESIGN_RATIONALE + one local run (behavior was built that the contract never named) | PROPOSED | every build |
 | S-37 | Soft words in a brief (smooth, safe, simple, "when possible") become a runnable check or a non-goal | correctness | DESIGN_RATIONALE | PROPOSED | every intake |
 
+## Entries added in v2.6 (from dsh-superagent-prototype; none tested in a kit build yet)
+
+| ID | Pattern | Kind | Evidence | Adoption | Applies when |
+|---|---|---|---|---|---|
+| S-38 | Attention is the scarcest input: speak only when a person must act or can use a result; one concrete question with a recommended answer | performance | DESIGN_RATIONALE (a built prototype, not evaluated) | PROPOSED | always |
+| S-39 | Probe the environment before the first question; a missing prerequisite is a plan item, not a question | performance | DESIGN_RATIONALE | PROPOSED | always |
+| S-40 | Never ask for a secret in chat; steps that need the person's hands go in one message with exact commands | safety | DESIGN_RATIONALE | APPROVED (safety; design reasons) | any sign-in, key or account |
+| S-41 | One report status from six words; ready means checks passed; a partial result is blocked and marked a draft | correctness | DESIGN_RATIONALE | PROPOSED | every handoff |
+| S-42 | Stop by impact, not by effort: an interface, responsibility or product change goes back to the contract and spends no repair | correctness | DESIGN_RATIONALE; conflicts in part with the repair cap (SOURCES.md) | PROPOSED | every build |
+| S-43 | Real Before and After evidence for any change users see; After alone is a gap | correctness | DESIGN_RATIONALE | PROPOSED | any interface change |
+| S-44 | Tests over the kit's own text: versions, counts, links, rule classes, core rules in every prompt form; each check shown failing | correctness | one local run: the check passed on v2.5, then caught the v2.6 version drift the moment it was made | EXPERIMENTAL | any prompt kit |
+| S-45 | A copied template records its base (kit version and path) so a later change shows as a difference | correctness | DESIGN_RATIONALE | PROPOSED | every project |
+
 ## How to promote
 0. Record the model, tool and build size a pattern was proven under. When those change, it goes back to EXPERIMENTAL until rechecked. One failed run is not a pattern, and one passing run is not proof.
 1. Write the entry as PROPOSED with where it came from.

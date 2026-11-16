@@ -21,6 +21,7 @@ Nothing in this kit is REPRODUCED_LOCAL yet. One build has been run with it (the
 | Control Plane as a Tool (Kandasamy, 2025) | in full | DESIGN_RATIONALE: a pattern, no evaluation | One narrow interface with checks in and out and a record of calls; ask for a capability, not a vendor | Builder D prompt |
 | Toward Super Agent System with Hybrid AI Routers (Yao et al., 2025) | first two thirds | DESIGN_RATIONALE: a position paper | Route by intent; send easy work to cheap models | Router template (already there); Step 1 |
 | The Landscape of Emerging AI Agent Architectures (Masterman et al., 2024) | key-findings sections only | DESIGN_RATIONALE here: a survey of others' results, not checked against them | One clear lead; plan before doing; no free chatter between agents | Step 1 "No free conversation" |
+| dsh-superagent-prototype (DeepSeek Harness Team, Oct 2026, MIT), github.com/deepseek-ai/dsh-superagent-prototype: the working code behind "Exploring Super-agent Design" | docs 000-005 in full, 007 tests and dependency rules, SETUP.md, prompts `work.md`, `team/scope.md`, `team/delivery.md`; code not read | DESIGN_RATIONALE: a built research prototype with about 60 test files, but no evaluation of whether its rules help; its authors call it research code that may contain bugs | Attention as the scarcest input; speak only when a person must act or can use a result; probe before asking; one concrete question with a recommended answer; never ask for a secret in chat; a six-word report status; stop by impact, not by effort; examples show format, never facts; real Before and After for UI changes; an order of precedence between sources; templates that record their base; tests over the prompt text itself (the kit check) | Rules 16-18; Step 0; Phase 0 step 7; Context layers; Phase 2 statuses; Phase 3 honest evidence; Resuming; Phase 5; `scripts/check-kit.mjs`; `proofline-runtime` steps 6 and 9 |
 | Building LLM Agents by Incorporating Insights from Computer Systems (Mi et al., 2025) | first half | DESIGN_RATIONALE: an analogy | Nothing new; it agrees with the context layers | - |
 
 ## Safety rules are not waiting on papers
@@ -32,10 +33,14 @@ Rules 1, 4, 5, 6, 7, 10 and 11 (no false claims, no self-granted authority, sepa
 - WorkflowArena's second strong model wrote plans that made weaker builders worse. The "strongest model plans" rule was removed in v2.4.
 - The self-test's second builder was not needed.
 
+- dsh-superagent-prototype asks setup questions **one per message**; this kit asks independent questions **in one batch**. v2.6 keeps the batch and borrows its rule that a question waiting on an earlier answer waits for it. Neither way has been compared.
+- dsh-superagent-prototype sets **no fixed round limit** on investigation or implementation and stops by impact; this kit caps repairs at two per failed gate. v2.6 adds the impact stop and keeps the cap: the cap is for effort on one problem, the impact stop for problems a builder may not settle. Neither has been compared.
+
 ## Deliberately not adopted
 - Trained planners, learned routers and bandits: they need training data and infrastructure.
 - A compiler, scheduler, policy engine and provenance graph: right for a product that runs unattended; too heavy for a build kit.
 - A fixed "2,000-8,000 tokens per stage" target: reported as typical in one paper's own workspaces, not a tested optimum.
+- From dsh-superagent-prototype: its Source, Trigger, Thread and Ticket model, the GitHub and Feishu listeners, the web panel and the auto-merge rules. They belong to a running agent that takes requests from a team, which is Project Factory's job (see `proofline-runtime`), not a build method's.
 - Debate and large ensembles: where priced, several times the calls for about one point.
 - "Rotation" and "competitive teams" (MSEval): they scored well on average there, but each multiplies cost and neither fits one owner per path.
 

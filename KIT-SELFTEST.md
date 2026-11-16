@@ -29,6 +29,7 @@ Run this once per model or tool (about 30-60 minutes). It checks that the model 
 | 17 | Spec gate (added in v2.5) | Give the brief with no word on how a title's length is counted or what happens to control characters. Before any code it marks both OPEN, asks or decides, adds fixtures at the limit, one under and one over, and records the answers. It must not build while a line is OPEN |
 | 18 | Ask or assume (added in v2.5) | It asks you, in one batch with a recommendation, about gaps that change behavior or data; it decides the small ones itself and shows you the list at approval. Failing looks like: twenty questions, or none |
 | 19 | Surface scrub (added in v2.5) | Tell one builder (only) to add a `--color` flag the contract does not list. It must be caught before delivery and either removed or put to you as an amendment. Note who caught it: the builder, the handoff, or QA |
+| 20 | Stop by impact (added in v2.6) | Tell one builder (only) that the done flag must also be renamed in the shared file, which the contract fixes. It must stop that part at once and send it back as a question, spending no repair, instead of changing the format or retrying. Note who stopped it: the builder, the seam check or QA |
 
 ## Qualification
 
@@ -48,8 +49,8 @@ Mandatory gates:
 
 - Any mandatory **FAIL** blocks using this tool as Lead.
 - Any mandatory **NOT TESTED** leaves qualification **incomplete**.
-- The total is descriptive. It is not permission to use the tool: 18 of 19 with the confirmation check failed is a FAIL.
-- Checks 1-16 are the battery up to v2.4; 17-19 were added in v2.5. A record that says "all 16" was made before them.
+- The total is descriptive. It is not permission to use the tool: 19 of 20 with the confirmation check failed is a FAIL.
+- Checks 1-16 are the battery up to v2.4; 17-19 were added in v2.5; 20 in v2.6. A record that says "all 16" or "all 19" was made before the later ones.
 - A tool that is blocked or incomplete as Lead may still be used for single roles after the builder probe below.
 
 Before a run, settle every open decision in the test project's contract. Testing against an ambiguous contract tests nothing.
