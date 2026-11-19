@@ -2,6 +2,8 @@
 
 Attach to every packet: the approved SPEC (with fixtures), the PLAN row for that role, and HANDOFF-TEMPLATE.md. Give only the references and upstream files that role needs. Replace every `<...>`.
 
+In Claude Code these roles are also packaged as five subagents in `agents/` (lead, researcher, architect, builder, QA). Two of them have no section below: the deep researcher (`agents/proofline-researcher.md`) and the ICM architect (`agents/proofline-architect.md`); in other tools, paste the body of those files as the role prompt.
+
 ## Shared builder rules (include in every builder packet)
 
 ```

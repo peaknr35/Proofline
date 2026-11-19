@@ -27,9 +27,23 @@ Proofline is a build method you give to an AI model. It turns an idea into a wor
 
 `proofline-build` is the one most people need. The other three are for specific moments.
 
+## The five agents
+
+Each one is a specialist with a single job and its own hard rules. They live in [`agents/`](agents/) as Claude Code subagent files and ship in the plugin. Status: written, not yet run in a build.
+
+| Agent | Its one job | Strict about |
+|---|---|---|
+| [`proofline-lead`](agents/proofline-lead.md) | Owns scope, the contract, the plan and integration; sends work to the other four | Nothing built before approval; every packet complete; builder reports are claims, not proof |
+| [`proofline-researcher`](agents/proofline-researcher.md) | Deep research on any topic, Perplexity-style | Every claim cited to a source it actually opened; key claims checked against two independent sources; contradictions shown, not averaged; a confidence level on every finding; `NOT FOUND` instead of guessing |
+| [`proofline-architect`](agents/proofline-architect.md) | Designs the ICM structure, the flow and the build system; scaffolds the workspace | One job per folder; one home per fact; every flow edge is a named file; a project a fresh agent can find its way around in about three reads |
+| [`proofline-builder`](agents/proofline-builder.md) | Builds one owned unit to the approved contract | Only its own paths; nothing the contract does not list; actual commands and results |
+| [`proofline-qa`](agents/proofline-qa.md) | Verifies the build from a fresh context | Runs everything itself; a check that cannot fail proves nothing; it never repairs the code it is checking |
+
+Five is a ceiling, not a target: the Lead launches only the specialists the work needs. The researcher and architect are also useful on their own, outside a build: ask for `proofline-researcher` on any question, or `proofline-architect` to restructure a repository. Subagents cannot launch other subagents, so run the Lead as the main conversation (`claude --agent proofline-lead`) when it should dispatch the others; as a subagent it returns ready-to-send packets instead.
+
 ## Install
 
-**Claude (claude.ai or the desktop app):** build the plugin, then upload it under **Plugins → Add → Upload plugin**. It installs all four skills.
+**Claude (claude.ai or the desktop app):** build the plugin, then upload it under **Plugins → Add → Upload plugin**. It installs all four skills and the five agents.
 
 ```bash
 python scripts/build-plugin.py
@@ -40,8 +54,10 @@ The zip lands in `dist/proofline-plugin.zip`. Rebuild and upload again after eac
 **Claude Code, as personal skills:** the same script writes the four skill folders into your skills folder, replacing earlier copies of them.
 
 ```bash
-python scripts/build-plugin.py --install ~/.claude/skills
+python scripts/build-plugin.py --install ~/.claude/skills --agents ~/.claude/agents
 ```
+
+`--agents` writes the five agent files into that folder; leave it out to install the skills only.
 
 **Other tools:**
 
@@ -109,8 +125,9 @@ Full shape and rules: [`templates/icm/README.md`](templates/icm/README.md).
 | `templates/` | Intake, contract, spec gate, plan, role prompts, handoff, final report, evidence card, the Shark Tank Proof handoff, and `icm/` (the project scaffold) |
 | `library/` | Starting shapes (`ARCHETYPES.md`), reusable patterns and their status (`PATTERNS-LOG.md`), the research behind each rule and how strong it is (`SOURCES.md`, `EVIDENCE-CARDS.md`) |
 | `skills/` | The three companion skills |
-| `scripts/check-kit.mjs` | Checks the kit's own text: one version everywhere, counts that agree, links that resolve, every rule classified, core rules in every prompt form. `node scripts/check-kit.mjs`; `node --test scripts/check-kit.test.mjs` proves each check can fail |
-| `scripts/build-plugin.py` | Packages the four skills as one plugin zip for upload |
+| `agents/` | The five specialist agents: lead, researcher, architect, builder, QA |
+| `scripts/check-kit.mjs` | Checks the kit's own text: one version everywhere, counts that agree, links that resolve, every rule classified, core rules in every prompt form, all five agents named and carrying hard rules. `node scripts/check-kit.mjs`; `node --test scripts/check-kit.test.mjs` proves each check can fail |
+| `scripts/build-plugin.py` | Packages the four skills and five agents as one plugin zip for upload |
 | `selftest-run/` | Records of the self-test runs, kept as they were made |
 
 The research papers themselves are not in the repository, because they are other people's copyright; `library/SOURCES.md` links to each one.

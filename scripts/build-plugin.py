@@ -7,6 +7,7 @@ Writes dist/proofline-plugin.zip with this layout:
     .claude-plugin/plugin.json
     skills/proofline-build/   the kit: SKILL.md, prompts, self-test, templates/, library/*.md
     skills/proofline-plan/    skills/proofline-audit/    skills/proofline-runtime/
+    agents/                   the five specialists: lead, researcher, architect, builder, qa
 
 Left out on purpose: the research PDFs (other people's copyright), templates/five-agent-build/
 (the old nested copy), selftest-run/ (build records) and scripts/ (tools for this repository).
@@ -22,6 +23,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "dist", "proofline-plugin.zip")
 KIT_FILES = ["SKILL.md", "README.md", "UNIVERSAL-PROMPT.md", "COMPACT-PROMPT.txt", "KIT-SELFTEST.md"]
 COMPANIONS = ["proofline-plan", "proofline-audit", "proofline-runtime"]
+AGENTS = ["proofline-lead", "proofline-researcher", "proofline-architect", "proofline-builder", "proofline-qa"]
 
 
 def read(rel):
@@ -57,10 +59,11 @@ def main():
             "examples-first, a spec gate that ends, scoped builders, fresh QA, evidence on every claim), "
             "proofline-plan (decide whether work needs organizing, then split and staff it), proofline-audit "
             "(test whether each agent earns its place) and proofline-runtime (design the software that "
-            "enforces a workflow). Candidate: see the self-test record before relying on it."
+            "enforces a workflow). Five agents: proofline-lead, proofline-researcher (deep research), "
+            "proofline-architect (ICM structure and flow), proofline-builder and proofline-qa. Candidate: see the self-test record before relying on it."
         ),
         "author": {"name": "Proofline contributors"},
-        "keywords": ["build", "contract", "spec", "qa", "agents", "evidence"],
+        "keywords": ["build", "contract", "spec", "qa", "agents", "evidence", "research", "architecture"],
     }
     entries = {".claude-plugin/plugin.json": json.dumps(manifest, indent=2) + "\n"}
     for f in KIT_FILES:
@@ -72,6 +75,8 @@ def main():
             entries[f"skills/proofline-build/{rel}"] = read(rel)
     for name in COMPANIONS:
         entries[f"skills/{name}/SKILL.md"] = read(f"skills/{name}/SKILL.md")
+    for name in AGENTS:
+        entries[f"agents/{name}.md"] = read(f"agents/{name}.md")
 
     for path, text in entries.items():
         if path.endswith("SKILL.md"):
@@ -80,6 +85,11 @@ def main():
             folder = path.split("/")[1]
             if name != folder:
                 raise SystemExit(f"{path}: skill is named {name}, folder is {folder}")
+        elif path.startswith("agents/"):
+            m = re.match(r"^---\n(.*?)\n---\n", text.replace("\r\n", "\n"), re.S)
+            name = re.search(r"^name:\s*(.+)$", m.group(1), re.M).group(1).strip() if m else None
+            if name != path[len("agents/"):-len(".md")]:
+                raise SystemExit(f"{path}: agent is named {name}")
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED) as z:
@@ -88,6 +98,19 @@ def main():
     print(f"wrote {os.path.relpath(OUT, ROOT)}: proofline {v}, {len(entries)} files, "
           f"{os.path.getsize(OUT):,} bytes")
     return entries
+
+
+def install_agents(entries, target):
+    """Write the five agent files into an agents folder, e.g. ~/.claude/agents."""
+    target = os.path.abspath(os.path.expanduser(target))
+    os.makedirs(target, exist_ok=True)
+    names = []
+    for path, text in sorted(entries.items()):
+        if path.startswith("agents/"):
+            with io.open(os.path.join(target, path[len("agents/"):]), "w", encoding="utf-8", newline="\n") as fh:
+                fh.write(text.replace("\r\n", "\n"))
+            names.append(path[len("agents/"):-len(".md")])
+    print(f"installed agents {', '.join(names)} into {target}")
 
 
 def install(entries, target):
@@ -114,7 +137,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Package Proofline as a plugin zip.")
     parser.add_argument("--install", metavar="SKILLS_DIR",
                         help="also write the four skill folders into this skills folder, e.g. ~/.claude/skills")
+    parser.add_argument("--agents", metavar="AGENTS_DIR",
+                        help="also write the five agent files into this agents folder, e.g. ~/.claude/agents")
     args = parser.parse_args()
     built = main()
     if args.install:
         install(built, args.install)
+    if args.agents:
+        install_agents(built, args.agents)

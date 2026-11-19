@@ -52,6 +52,7 @@ const BREAKS = [
   ['K7', 'an old name back in a prompt', (d) => change(d, 'UNIVERSAL-PROMPT.md', (s) => s + '\nUse five-agent-build.\n')],
   ['K8', 'a core rule reworded out of the compact prompt', (d) => change(d, 'COMPACT-PROMPT.txt', (s) => s.replace('SELF-REVIEW', 'SOLO-REVIEW'))],
   ['K9', 'a status missing from the handoff template', (d) => change(d, 'templates/HANDOFF-TEMPLATE.md', (s) => s.replace(' · `dropped`', ''))],
+  ['K10', 'an agent that lost its hard rules', (d) => change(d, 'agents/proofline-researcher.md', (s) => s.replace('## Hard rules', '## Rules'))],
 ];
 
 for (const [id, what, breakIt] of BREAKS) {

@@ -47,6 +47,8 @@ Find out by **probing, not by asking**: run the version and sign-in checks once,
 
 If QA cannot run in a fresh context, label it `SELF-REVIEW`, not independent QA.
 
+**Specialist agents.** Where the host supports subagents, `agents/` packages the roles as five specialists: `proofline-lead`, `proofline-researcher` (deep, cited research when a decision rests on facts you do not have), `proofline-architect` (ICM structure and flow: the workspace map in Phase 1, the scaffold in Phase 1b), `proofline-builder` and `proofline-qa`. Use only the ones the work needs; the delegation test in Step 1 applies to each.
+
 ## Step 1 - Split first, assign second
 
 Do not default to content / backend / frontend / AI builders. Those are capabilities a unit may need, not owners.

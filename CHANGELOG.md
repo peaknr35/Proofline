@@ -15,6 +15,8 @@ Proofline was called Five-Agent Build through v2.4. The old name pointed at the 
 
 ## v2.7 (candidate: not yet run)
 
+**Five specialist agents** (new, not yet run in a build). `agents/` holds one Claude Code subagent file per role, each with one job and a "Hard rules" section: `proofline-lead`, `proofline-researcher` (deep research: sub-questions, many phrasings including the opposing case, sources read rather than snippets, source grades A-D, two independent sources per key claim, contradictions shown, a confidence on every finding, a method log), `proofline-architect` (ICM structure, stage flow, seams, load/skip tables, build system, a walk test of its own design), `proofline-builder` and `proofline-qa`. The plugin ships them; `build-plugin.py --agents DIR` installs them; kit check K10 confirms all five are present, correctly named and carry hard rules. The researcher and architect are new roles; the other three package the existing role prompts. Whether either new role earns its place is untested: run `proofline-audit` on them before relying on them.
+
 Fixes for the defects the v2.6 self-test exposed (record: `selftest-run/tasklet-v2.6/GRADES.md`, M1-M10). Each rests on one run, so each is PROPOSED in `library/PATTERNS-LOG.md`.
 
 - **The spec gate now ends** (M1). Four rules: a depth set per project (`everyday` or `adversarial`), with what falls below it written as stated limits; ASSUME items closed by the Lead's recorded decision with no further run; every run after the first is a verification run (earlier gaps closed, changed text only); and the spec gate is under the repair cap.

@@ -21,6 +21,14 @@ export const SKILLS = {
   'skills/proofline-audit': 'proofline-audit',
   'skills/proofline-runtime': 'proofline-runtime',
 };
+// The five specialist agents (agents/*.md) and the name each must carry.
+export const AGENTS = {
+  'agents/proofline-lead.md': 'proofline-lead',
+  'agents/proofline-researcher.md': 'proofline-researcher',
+  'agents/proofline-architect.md': 'proofline-architect',
+  'agents/proofline-builder.md': 'proofline-builder',
+  'agents/proofline-qa.md': 'proofline-qa',
+};
 const OLD_NAMES = ['five-agent-build', 'workflow-orchestration', 'agent-team-audit', 'agent-runtime-design'];
 
 // Rules every prompt form must state. A short form may word them differently, so each
@@ -63,7 +71,7 @@ function kitFiles(root) {
       else if (e.name.endsWith('.md')) out.push(r);
     }
   };
-  for (const d of ['templates', 'library', 'skills']) if (exists(root, d)) walk(d);
+  for (const d of ['templates', 'library', 'skills', 'agents']) if (exists(root, d)) walk(d);
   return out;
 }
 
@@ -157,7 +165,7 @@ function frontmatter(root) {
 }
 
 function oldNames(root) {
-  const files = ['UNIVERSAL-PROMPT.md', 'COMPACT-PROMPT.txt', ...kitFiles(root).filter((f) => f.startsWith('templates/') || f.startsWith('skills/'))];
+  const files = ['UNIVERSAL-PROMPT.md', 'COMPACT-PROMPT.txt', ...kitFiles(root).filter((f) => f.startsWith('templates/') || f.startsWith('skills/') || f.startsWith('agents/'))];
   const problems = [];
   for (const f of files) for (const n of OLD_NAMES) if (read(root, f).includes(n)) problems.push(`${f} still says ${n}`);
   return problems;
@@ -180,6 +188,23 @@ function statuses(root) {
   return a === b ? [] : [`SKILL.md says ${a}; the handoff template says ${b}`];
 }
 
+function agents(root) {
+  const problems = [];
+  for (const [rel, name] of Object.entries(AGENTS)) {
+    if (!exists(root, rel)) { problems.push(`${rel} is missing`); continue; }
+    const text = read(root, rel);
+    const fm = text.match(/^---\n([\s\S]*?)\n---\n/)?.[1];
+    if (!fm) { problems.push(`${rel} has no front matter`); continue; }
+    const got = fm.match(/^name:\s*(.+)$/m)?.[1]?.trim();
+    if (got !== name) problems.push(`${rel} is named ${got}, expected ${name}`);
+    const desc = fm.match(/^description:\s*(.+)$/m)?.[1] ?? '';
+    if (chars(desc) < 80) problems.push(`${rel} description is missing or too thin`);
+    if (chars(desc) > 1024) problems.push(`${rel} description is ${chars(desc)} characters, over 1024`);
+    if (!/^## Hard rules/m.test(text)) problems.push(`${rel} has no "## Hard rules" section`);
+  }
+  return problems;
+}
+
 export const CHECKS = [
   ['K1', 'one version everywhere', versions],
   ['K2', 'self-test count agrees', selftestCount],
@@ -190,6 +215,7 @@ export const CHECKS = [
   ['K7', 'no old names in prompts, templates or skills', oldNames],
   ['K8', 'core rules in every prompt form', coreRules],
   ['K9', 'one status vocabulary', statuses],
+  ['K10', 'five agents: names, descriptions, hard rules', agents],
 ];
 
 export function runChecks(root) {
