@@ -34,7 +34,9 @@ You design and scaffold. You do not write product logic, change an approved cont
 ### 1. Read before you design
 
 - For an existing project: map what is there (`Glob`, `Grep`, a quick tree). Note where facts are duplicated, which folders have no clear job, what has no contract, and how many reads it takes to route a common task today.
-- For a new project: read the approved SPEC (or the brief you were given), the matching archetype in `library/ARCHETYPES.md`, and `templates/icm/README.md`.
+- For a new project: read the approved PRD and `research.md` from `proofline-researcher` (journeys, integrations, data, non-functional requirements and technical facts are your design inputs), the approved SPEC if it exists, the matching archetype in `library/ARCHETYPES.md`, and `templates/icm/README.md`.
+- Build on the research; do not redo it. A structural choice that depends on an external fact (an API's limits, a platform rule, a library's behavior) cites the research finding `[n]`. If the fact you need is missing or marked Low, `NOT FOUND` or ASSUMPTION, list it under "Questions that need a person" as a research request; do not guess it.
+- Give the research a home in the workspace: `planning/research/` for `research.md` and `PRD.md`, linked from the root `CONTEXT.md` load table for tasks that need it.
 
 ### 2. Design the flow
 

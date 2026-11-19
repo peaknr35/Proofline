@@ -34,7 +34,7 @@ Each one is a specialist with a single job and its own hard rules. They live in 
 | Agent | Its one job | Strict about |
 |---|---|---|
 | [`proofline-lead`](agents/proofline-lead.md) | Owns scope, the contract, the plan and integration; sends work to the other four | Nothing built before approval; every packet complete; builder reports are claims, not proof |
-| [`proofline-researcher`](agents/proofline-researcher.md) | Deep research on any topic, Perplexity-style | Every claim cited to a source it actually opened; key claims checked against two independent sources; contradictions shown, not averaged; a confidence level on every finding; `NOT FOUND` instead of guessing |
+| [`proofline-researcher`](agents/proofline-researcher.md) | Deep research on any topic, Perplexity-style, and the evidence the other four build on. In Product mode it also writes a PRD and MVP cut ([`templates/PRD-TEMPLATE.md`](templates/PRD-TEMPLATE.md)) | Every claim cited to raw source text it read; quotes character-exact; key claims checked against two independent sources; a citation audit that re-opens every source before anything leaves; contradictions shown, not averaged; `NOT FOUND` instead of guessing; every requirement traced to evidence or marked as an assumption |
 | [`proofline-architect`](agents/proofline-architect.md) | Designs the ICM structure, the flow and the build system; scaffolds the workspace | One job per folder; one home per fact; every flow edge is a named file; a project a fresh agent can find its way around in about three reads |
 | [`proofline-builder`](agents/proofline-builder.md) | Builds one owned unit to the approved contract | Only its own paths; nothing the contract does not list; actual commands and results |
 | [`proofline-qa`](agents/proofline-qa.md) | Verifies the build from a fresh context | Runs everything itself; a check that cannot fail proves nothing; it never repairs the code it is checking |
@@ -122,7 +122,7 @@ Full shape and rules: [`templates/icm/README.md`](templates/icm/README.md).
 | `COMPACT-PROMPT.txt` | About 1,230 characters, for short instruction boxes |
 | `KIT-SELFTEST.md` | A 21-point test to run once per tool before relying on it, plus a short probe for builder-only models |
 | `CHANGELOG.md` | What changed in each version, and how strong the evidence is |
-| `templates/` | Intake, contract, spec gate, plan, role prompts, handoff, final report, evidence card, the Shark Tank Proof handoff, and `icm/` (the project scaffold) |
+| `templates/` | Intake, PRD (research-backed requirements and MVP cut), contract, spec gate, plan, role prompts, handoff, final report, evidence card, the Shark Tank Proof handoff, and `icm/` (the project scaffold) |
 | `library/` | Starting shapes (`ARCHETYPES.md`), reusable patterns and their status (`PATTERNS-LOG.md`), the research behind each rule and how strong it is (`SOURCES.md`, `EVIDENCE-CARDS.md`) |
 | `skills/` | The three companion skills |
 | `agents/` | The five specialist agents: lead, researcher, architect, builder, QA |

@@ -47,7 +47,7 @@ Find out by **probing, not by asking**: run the version and sign-in checks once,
 
 If QA cannot run in a fresh context, label it `SELF-REVIEW`, not independent QA.
 
-**Specialist agents.** Where the host supports subagents, `agents/` packages the roles as five specialists: `proofline-lead`, `proofline-researcher` (deep, cited research when a decision rests on facts you do not have), `proofline-architect` (ICM structure and flow: the workspace map in Phase 1, the scaffold in Phase 1b), `proofline-builder` and `proofline-qa`. Use only the ones the work needs; the delegation test in Step 1 applies to each.
+**Specialist agents.** Where the host supports subagents, `agents/` packages the roles as five specialists: `proofline-lead`, `proofline-researcher` (the evidence base: deep, cited, citation-audited research, and in Product mode a PRD and MVP cut, `templates/PRD-TEMPLATE.md`, that the contract is built from), `proofline-architect` (ICM structure and flow: the workspace map in Phase 1, the scaffold in Phase 1b), `proofline-builder` and `proofline-qa`. Use only the ones the work needs; the delegation test in Step 1 applies to each.
 
 ## Step 1 - Split first, assign second
 

@@ -42,10 +42,10 @@ PASS with one rule broken in a minor way. The research is sound and well sourced
 
 Likely cause: the fetch tool returns a model-processed version of a page, not its raw text. The agent's own note says most quotes came from those excerpts. Its quotes from the PDF text it extracted itself ([9], [12]) were exact.
 
-## Proposed changes to the agent (PROPOSED, not adopted)
+## Changes to the agent (adopted 2026-11-19 at the person's request; not yet re-tested)
 
 1. Quote only from raw page text (raw HTML or PDF text extracted locally). A quote taken from a fetch tool's summary is marked `[via fetch summary]` and cannot carry a key claim alone.
 2. When a quote ends early, write `...` where it was cut, and keep any scope words that limit the claim ("for X tasks", "in setting Y").
 3. When the host blocks subagent file writes, return the report as text and say so. This run already did this, so the rule only needs writing down.
 
-One run is not a rule. Adopt these only if a second run shows the same gaps.
+All three are now in `agents/proofline-researcher.md` (rules 3, 4, 5 and the output section), along with a mandatory citation audit (method step 8). The person chose to adopt them after one run instead of waiting for a second. The next run of the researcher is the test of whether they work.
