@@ -5,12 +5,13 @@
 Writes dist/proofline-plugin.zip with this layout:
 
     .claude-plugin/plugin.json
-    skills/proofline-build/   the kit: SKILL.md, prompts, self-test, templates/, library/*.md
+    skills/proofline-build/   the kit: SKILL.md, prompts, self-test, templates/, library/*.md,
+                              scripts/check-research.mjs (the researcher's machine check), tools/eyes/ (its eyes)
     skills/proofline-plan/    skills/proofline-audit/    skills/proofline-runtime/
     agents/                   the five specialists: lead, researcher, architect, builder, qa
 
 Left out on purpose: the research PDFs (other people's copyright), templates/five-agent-build/
-(the old nested copy), selftest-run/ (build records) and scripts/ (tools for this repository).
+(the old nested copy), selftest-run/ (build records) and the other scripts/ (tools for this repository).
 Standard library only.
 """
 import io
@@ -72,6 +73,10 @@ def main():
         entries[f"skills/proofline-build/{rel}"] = read(rel)
     for rel in files_under("library"):
         if rel.endswith(".md"):
+            entries[f"skills/proofline-build/{rel}"] = read(rel)
+    entries["skills/proofline-build/scripts/check-research.mjs"] = read("scripts/check-research.mjs")
+    for rel in files_under("tools/eyes", skip={"tools/eyes/.venv", "tools/eyes/.pytest_cache", "tools/eyes/proofline_eyes.egg-info"}):
+        if not ("__pycache__" in rel or rel.endswith(".lock")):
             entries[f"skills/proofline-build/{rel}"] = read(rel)
     for name in COMPANIONS:
         entries[f"skills/{name}/SKILL.md"] = read(f"skills/{name}/SKILL.md")

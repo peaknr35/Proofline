@@ -1,0 +1,26 @@
+[project]
+name = "proofline-eyes"
+version = "0.1.0"
+description = "Eyes for a research agent: read any page, video transcript, repo or social post, and search the web and social platforms, using free open-source clients only."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+  "trafilatura>=1.12",  # main-text extraction from web pages
+  "yt-dlp>=2024.1",     # YouTube and Bilibili metadata, search and subtitles
+  "ddgs>=9.0",          # DuckDuckGo and other no-key web search backends
+  "pypdf>=4.0",         # PDF text
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.scripts]
+eyes = "eyes.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["eyes"]

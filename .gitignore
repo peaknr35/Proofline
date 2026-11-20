@@ -14,3 +14,9 @@ tasks.json
 
 # Built plugin zip (rebuild with: python scripts/build-plugin.py)
 dist/
+
+# Python leftovers (tools/eyes)
+.venv/
+__pycache__/
+.pytest_cache/
+*.egg-info/

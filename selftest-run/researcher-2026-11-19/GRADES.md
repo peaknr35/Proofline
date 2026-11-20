@@ -49,3 +49,19 @@ Likely cause: the fetch tool returns a model-processed version of a page, not it
 3. When the host blocks subagent file writes, return the report as text and say so. This run already did this, so the rule only needs writing down.
 
 All three are now in `agents/proofline-researcher.md` (rules 3, 4, 5 and the output section), along with a mandatory citation audit (method step 8). The person chose to adopt them after one run instead of waiting for a second. The next run of the researcher is the test of whether they work.
+
+## Machine check of the same report (added 2026-11-19)
+
+`scripts/check-research.mjs` was run on `report.md` after the 15 cited sources were downloaded again as raw HTML or PDF text (kept out of the repository: they are other people's work). It checked 37 quotes and found 31 word for word.
+
+| Line | Source | What the check found | Also found by the hand spot-check? |
+|---|---|---|---|
+| 43 | [8] Cognition | "answering a well-defined question" - the source says "answering a question"; "well-defined" was added | no (not sampled) |
+| 78 | [1] Tran & Kiela | a paraphrase in quotation marks | yes |
+| 98 | [9] | "best use of a large budget" and "best result per typical run" are the researcher's own phrases in quotation marks | no (not sampled) |
+| 118 | [5] Vals AI | ends with a period where the source has a colon and continues | yes |
+| 134 | [13] | a sentence cut short with no "..." | yes |
+
+It also reported that the report has no citation audit line or table; that report was written before the audit rule existed.
+
+Not caught: the [10] quote "recommend defaulting to a single agent" is word for word but drops "for LeetCode-style coding tasks". A text match cannot see words that were left off the end. That stays with the researcher's own audit and the Lead's spot-check.
