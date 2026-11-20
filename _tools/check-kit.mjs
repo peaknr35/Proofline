@@ -3,8 +3,11 @@
 // disagree, counts that went stale, links to files that do not exist, a rule with no
 // class, a core rule missing from one prompt form. Node only, no dependencies.
 //
-//   node scripts/check-kit.mjs            run every check, exit 1 on any failure
-//   node --test scripts/check-kit.test.mjs  prove each check fails on a broken copy
+//   node _tools/check-kit.mjs            run every check, exit 1 on any failure
+//   node --test _tools/check-kit.test.mjs  prove each check fails on a broken copy
+//
+// Layout: the kit lives in kit/, exactly as the plugin zip. Kit files name paths relative to
+// the proofline-build skill folder (`templates/X.md`); loc() maps each one to its place in the repo.
 //
 // Rule 8 of the kit applies to this file too: every check here has a test in
 // check-kit.test.mjs that breaks one thing and shows this check failing.
@@ -14,7 +17,16 @@ import { fileURLToPath } from 'node:url';
 
 export const COMPACT_BUDGET = 1250; // characters; the short instruction boxes this prompt is for
 
-// Skill folders and the name each must carry. The root folder is proofline-build.
+export const KIT = 'kit/skills/proofline-build';
+// A path as the kit writes it -> its place in the repo.
+export function loc(rel) {
+  if (/^(kit|builds|_tools|_archive)\//.test(rel) || ['README.md', 'CHANGELOG.md', 'AGENTS.md', 'CLAUDE.md', 'CONTEXT.md'].includes(rel)) return rel;
+  if (rel.startsWith('selftest-run/')) return 'builds/' + rel.slice('selftest-run/'.length);
+  if (rel.startsWith('agents/') || rel.startsWith('skills/')) return 'kit/' + rel;
+  return path.posix.join(KIT, rel);
+}
+
+// Skill folders and the name each must carry. '.' is the proofline-build skill folder.
 export const SKILLS = {
   '.': 'proofline-build',
   'skills/proofline-plan': 'proofline-plan',
@@ -50,8 +62,8 @@ export const CORE = [
   { rule: 'approval recorded outside the contract', skill: /build\/APPROVAL\.md/, universal: /build\/APPROVAL\.md/, compact: null },
 ];
 
-const read = (root, rel) => fs.readFileSync(path.join(root, rel), 'utf8').replace(/\r\n/g, '\n');
-const exists = (root, rel) => fs.existsSync(path.join(root, rel));
+const read = (root, rel) => fs.readFileSync(path.join(root, loc(rel)), 'utf8').replace(/\r\n/g, '\n');
+const exists = (root, rel) => fs.existsSync(path.join(root, loc(rel)));
 const chars = (s) => [...s].length;
 
 function section(text, heading) {
@@ -65,13 +77,14 @@ function section(text, heading) {
 function kitFiles(root) {
   const out = ['SKILL.md', 'README.md', 'UNIVERSAL-PROMPT.md', 'KIT-SELFTEST.md'];
   const walk = (rel) => {
-    for (const e of fs.readdirSync(path.join(root, rel), { withFileTypes: true })) {
+    for (const e of fs.readdirSync(path.join(root, loc(rel)), { withFileTypes: true })) {
       const r = path.posix.join(rel, e.name);
-      if (e.isDirectory()) { if (r !== 'templates/five-agent-build') walk(r); }
+      if (e.isDirectory()) { if (!['.venv', 'node_modules', '.pytest_cache'].includes(e.name)) walk(r); }
       else if (e.name.endsWith('.md')) out.push(r);
     }
   };
-  for (const d of ['templates', 'library', 'skills', 'agents']) if (exists(root, d)) walk(d);
+  for (const d of ['templates', 'library', 'skills', 'agents', 'tools']) if (exists(root, d)) walk(d);
+  for (const f of ['AGENTS.md', 'CONTEXT.md', 'kit/CONTEXT.md', 'builds/CONTEXT.md']) if (exists(root, f)) out.push(f);
   return out;
 }
 
@@ -121,7 +134,7 @@ function compactLength(root) {
 
 function paths(root) {
   const problems = [];
-  const re = /`((?:templates|library|skills|scripts|selftest-run)\/[^`<>*\s]+?\.(?:md|mjs|txt|json))`/g;
+  const re = /`((?:templates|library|skills|scripts|selftest-run|kit|builds|_tools)\/[^`<>*\s]+?\.(?:md|mjs|txt|json|py|toml))`/g;
   for (const f of kitFiles(root)) {
     for (const m of read(root, f).matchAll(re)) if (!exists(root, m[1])) problems.push(`${f} points at ${m[1]}, which does not exist`);
   }
@@ -205,6 +218,23 @@ function agents(root) {
   return problems;
 }
 
+// The ICM layer: an entry file, a map, and a catalog in every area.
+export const CATALOGS = ['CONTEXT.md', 'kit/CONTEXT.md', 'builds/CONTEXT.md'];
+function workspace(root) {
+  const problems = [];
+  if (!exists(root, 'AGENTS.md')) problems.push('AGENTS.md (the entry file) is missing');
+  else if (read(root, 'AGENTS.md').trimEnd().split('\n').length > 60) problems.push('AGENTS.md is over 60 lines');
+  if (!exists(root, 'CLAUDE.md') || read(root, 'CLAUDE.md').trim() !== '@AGENTS.md') problems.push('CLAUDE.md must hold only @AGENTS.md');
+  for (const c of CATALOGS) if (!exists(root, c)) problems.push(`${c} is missing`);
+  if (exists(root, 'builds/CONTEXT.md')) {
+    const cat = read(root, 'builds/CONTEXT.md');
+    for (const e of fs.readdirSync(path.join(root, 'builds'), { withFileTypes: true })) {
+      if (e.isDirectory() && !cat.includes('`' + e.name + '/`')) problems.push(`builds/${e.name}/ has no row in builds/CONTEXT.md`);
+    }
+  }
+  return problems;
+}
+
 export const CHECKS = [
   ['K1', 'one version everywhere', versions],
   ['K2', 'self-test count agrees', selftestCount],
@@ -216,6 +246,7 @@ export const CHECKS = [
   ['K8', 'core rules in every prompt form', coreRules],
   ['K9', 'one status vocabulary', statuses],
   ['K10', 'five agents: names, descriptions, hard rules', agents],
+  ['K11', 'entry file, map and a catalog in every area', workspace],
 ];
 
 export function runChecks(root) {

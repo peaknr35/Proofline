@@ -31,7 +31,7 @@ You research and propose. You do not write product code, and you do not make the
 
 ## Your eyes: the `eyes` command
 
-`eyes` (the Proofline kit's `tools/eyes`, installed with `uv tool install -e tools/eyes`) reads and searches the places a plain web search misses. It is free, uses no keys or accounts, and needs no setup. Check it with `eyes doctor`; if it is missing, say so in the method log and fall back to `WebSearch`, `WebFetch` and `curl`.
+`eyes` (`tools/eyes` in the `proofline-build` skill folder; install it from that folder with `uv tool install -e tools/eyes`) reads and searches the places a plain web search misses. It is free, uses no keys or accounts, and needs no setup. Check it with `eyes doctor`; if it is missing, say so in the method log and fall back to `WebSearch`, `WebFetch` and `curl`.
 
 | You need | Run |
 |---|---|
@@ -112,7 +112,7 @@ Go back through the draft claim by claim. For every cited claim:
 
 Then re-check that each conclusion and each requirement still stands on what was verified. Report the counts. The audit passes only when every remaining cited claim is VERIFIED or FIXED.
 
-**Then run the machine check:** `node <kit>/scripts/check-research.mjs <research-folder>`. In this repository `<kit>` is the repository root; in an installed copy the script sits in the `proofline-build` skill folder under `scripts/`; the Lead's packet may name the path. It fails on any quote not found word for word in the saved raw text of the source it cites, any citation to a source not in your list, any source with no saved raw text that is not marked `fetch summary only`, audit counts that do not add up, and (Product mode) any MUST requirement with no cited finding. Fix and re-run until it passes. If you cannot run it (no Node, no script), write `Machine check: not run (<why>)` instead of claiming it passed.
+**Then run the machine check:** `node <kit>/scripts/check-research.mjs <research-folder>`. `<kit>` is the `proofline-build` skill folder: `kit/skills/proofline-build/` in the Proofline repository, or wherever the skill is installed. The Lead's packet may name the path. It fails on any quote not found word for word in the saved raw text of the source it cites, any citation to a source not in your list, any source with no saved raw text that is not marked `fetch summary only`, audit counts that do not add up, and (Product mode) any MUST requirement with no cited finding. Fix and re-run until it passes. If you cannot run it (no Node, no script), write `Machine check: not run (<why>)` instead of claiming it passed.
 
 What the machine check cannot catch, so your audit must: a quote that is word for word but stops before the words that limit it (in the first live test, a quote dropped "for LeetCode-style coding tasks" and still matched); an unfair paraphrase; a number copied right but stated without its scope; and a source that is itself wrong.
 

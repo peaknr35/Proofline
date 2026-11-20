@@ -6,6 +6,8 @@ It was inspired by the idea behind [Agent-Reach](https://github.com/Panniantong/
 
 ## Install
 
+From the `proofline-build` skill folder (`kit/skills/proofline-build/` in the Proofline repository):
+
 ```bash
 uv tool install -e tools/eyes
 ```

@@ -3,7 +3,7 @@
 
 # Old nested copy of the kit, a backup archive, and personal-use material
 # built on someone else's brand. Not for release.
-templates/five-agent-build/
+_archive/
 *.zip
 
 # Local leftovers
@@ -12,10 +12,10 @@ tasks.json
 *.log
 .env*
 
-# Built plugin zip (rebuild with: python scripts/build-plugin.py)
+# Built plugin zip (rebuild with: python _tools/build-plugin.py)
 dist/
 
-# Python leftovers (tools/eyes)
+# Python leftovers (kit/skills/proofline-build/tools/eyes)
 .venv/
 __pycache__/
 .pytest_cache/

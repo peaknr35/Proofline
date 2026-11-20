@@ -1,6 +1,6 @@
 """Offline tests: routing, parsing and the honesty rules. No network is touched.
 
-    cd tools/eyes && uv run --with pytest -m pytest -q
+    cd <proofline-build skill folder>/tools/eyes && uv run --with pytest -m pytest -q
 """
 import io
 import urllib.error

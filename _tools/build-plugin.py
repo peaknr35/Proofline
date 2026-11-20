@@ -1,17 +1,15 @@
 """Package the Proofline kit as a Claude plugin zip for upload ("My Uploads" on claude.ai).
 
-    python scripts/build-plugin.py
+    python _tools/build-plugin.py
+    python _tools/build-plugin.py --install ~/.claude/skills --agents ~/.claude/agents
 
-Writes dist/proofline-plugin.zip with this layout:
+kit/ is already laid out as the plugin, so the zip is kit/ as it is, plus:
 
-    .claude-plugin/plugin.json
-    skills/proofline-build/   the kit: SKILL.md, prompts, self-test, templates/, library/*.md,
-                              scripts/check-research.mjs (the researcher's machine check), tools/eyes/ (its eyes)
-    skills/proofline-plan/    skills/proofline-audit/    skills/proofline-runtime/
-    agents/                   the five specialists: lead, researcher, architect, builder, qa
+    .claude-plugin/plugin.json      written here, version from the proofline-build SKILL.md title
+    skills/proofline-build/README.md  the repo's README, so the installed skill explains itself
 
-Left out on purpose: the research PDFs (other people's copyright), templates/five-agent-build/
-(the old nested copy), selftest-run/ (build records) and the other scripts/ (tools for this repository).
+Left out: the research PDFs (other people's copyright), generated folders (.venv, caches,
+*.egg-info), and uv.lock. builds/ (records) and _tools/ (repo upkeep) are outside kit/.
 Standard library only.
 """
 import io
@@ -21,9 +19,10 @@ import re
 import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+KIT = os.path.join(ROOT, "kit")
+SKIP_DIRS = {".venv", ".pytest_cache", "__pycache__", "node_modules"}
 OUT = os.path.join(ROOT, "dist", "proofline-plugin.zip")
-KIT_FILES = ["SKILL.md", "README.md", "UNIVERSAL-PROMPT.md", "COMPACT-PROMPT.txt", "KIT-SELFTEST.md"]
-COMPANIONS = ["proofline-plan", "proofline-audit", "proofline-runtime"]
+SKILLS = ["proofline-build", "proofline-plan", "proofline-audit", "proofline-runtime"]
 AGENTS = ["proofline-lead", "proofline-researcher", "proofline-architect", "proofline-builder", "proofline-qa"]
 
 
@@ -33,21 +32,21 @@ def read(rel):
 
 
 def version():
-    m = re.search(r"^# .*\(v([\d.]+) candidate\)", read("SKILL.md"), re.M)
+    m = re.search(r"^# .*\(v([\d.]+) candidate\)", read("kit/skills/proofline-build/SKILL.md"), re.M)
     if not m:
         raise SystemExit("SKILL.md title carries no version")
     parts = m.group(1).split(".")
     return ".".join((parts + ["0", "0"])[:3])
 
 
-def files_under(rel_dir, skip=()):
-    base = os.path.join(ROOT, rel_dir)
-    for dirpath, dirnames, filenames in os.walk(base):
-        rel = os.path.relpath(dirpath, ROOT).replace("\\", "/")
-        dirnames[:] = sorted(d for d in dirnames if f"{rel}/{d}" not in skip and d != "__pycache__")
+def kit_files():
+    """Every shippable file under kit/, as a zip path."""
+    for dirpath, dirnames, filenames in os.walk(KIT):
+        dirnames[:] = sorted(d for d in dirnames if d not in SKIP_DIRS and not d.endswith(".egg-info"))
         for f in sorted(filenames):
-            if not f.lower().endswith(".pdf"):
-                yield f"{rel}/{f}"
+            if f.lower().endswith(".pdf") or f == "uv.lock":
+                continue
+            yield os.path.relpath(os.path.join(dirpath, f), KIT).replace("\\", "/")
 
 
 def main():
@@ -67,21 +66,13 @@ def main():
         "keywords": ["build", "contract", "spec", "qa", "agents", "evidence", "research", "architecture"],
     }
     entries = {".claude-plugin/plugin.json": json.dumps(manifest, indent=2) + "\n"}
-    for f in KIT_FILES:
-        entries[f"skills/proofline-build/{f}"] = read(f)
-    for rel in files_under("templates", skip={"templates/five-agent-build"}):
-        entries[f"skills/proofline-build/{rel}"] = read(rel)
-    for rel in files_under("library"):
-        if rel.endswith(".md"):
-            entries[f"skills/proofline-build/{rel}"] = read(rel)
-    entries["skills/proofline-build/scripts/check-research.mjs"] = read("scripts/check-research.mjs")
-    for rel in files_under("tools/eyes", skip={"tools/eyes/.venv", "tools/eyes/.pytest_cache", "tools/eyes/proofline_eyes.egg-info"}):
-        if not ("__pycache__" in rel or rel.endswith(".lock")):
-            entries[f"skills/proofline-build/{rel}"] = read(rel)
-    for name in COMPANIONS:
-        entries[f"skills/{name}/SKILL.md"] = read(f"skills/{name}/SKILL.md")
-    for name in AGENTS:
-        entries[f"agents/{name}.md"] = read(f"agents/{name}.md")
+    for rel in kit_files():
+        entries[rel] = read(f"kit/{rel}")
+    entries["skills/proofline-build/README.md"] = read("README.md")
+    missing = [f"skills/{n}/SKILL.md" for n in SKILLS if f"skills/{n}/SKILL.md" not in entries]
+    missing += [f"agents/{n}.md" for n in AGENTS if f"agents/{n}.md" not in entries]
+    if missing:
+        raise SystemExit(f"kit/ is missing {', '.join(missing)}")
 
     for path, text in entries.items():
         if path.endswith("SKILL.md"):

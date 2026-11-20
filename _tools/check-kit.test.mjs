@@ -7,19 +7,19 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { runChecks } from './check-kit.mjs';
+import { runChecks, loc } from './check-kit.mjs';
 
 const KIT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SKIP = new Set(['.git', 'node_modules', path.join('templates', 'five-agent-build')]);
-const TEXT = /\.(md|json|txt|mjs)$/; // selftest-run is copied as text only: the kit links to its records
+const SKIP = new Set(['.git', 'node_modules', '_archive', 'dist', '.venv', '.pytest_cache', '__pycache__']);
+const TEXT = /\.(md|json|txt|mjs)$/; // builds/ is copied as text only: the kit links to its records
 
 function copyKit() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'proofline-kit-'));
   const walk = (rel) => {
     for (const e of fs.readdirSync(path.join(KIT, rel), { withFileTypes: true })) {
       const r = path.join(rel, e.name);
-      if (SKIP.has(r) || e.name.endsWith('.pdf')) continue;
-      if (r.startsWith('selftest-run') && e.isFile() && !TEXT.test(e.name)) continue;
+      if (SKIP.has(e.name) || e.name.endsWith('.pdf')) continue;
+      if (r.startsWith('builds') && e.isFile() && !TEXT.test(e.name)) continue;
       if (e.isDirectory()) { fs.mkdirSync(path.join(dir, r), { recursive: true }); walk(r); }
       else fs.copyFileSync(path.join(KIT, r), path.join(dir, r));
     }
@@ -29,7 +29,7 @@ function copyKit() {
 }
 
 function change(dir, rel, fn) {
-  const p = path.join(dir, rel);
+  const p = path.join(dir, loc(rel));
   fs.writeFileSync(p, fn(fs.readFileSync(p, 'utf8').replace(/\r\n/g, '\n')));
 }
 
@@ -53,6 +53,7 @@ const BREAKS = [
   ['K8', 'a core rule reworded out of the compact prompt', (d) => change(d, 'COMPACT-PROMPT.txt', (s) => s.replace('SELF-REVIEW', 'SOLO-REVIEW'))],
   ['K9', 'a status missing from the handoff template', (d) => change(d, 'templates/HANDOFF-TEMPLATE.md', (s) => s.replace(' · `dropped`', ''))],
   ['K10', 'an agent that lost its hard rules', (d) => change(d, 'agents/proofline-researcher.md', (s) => s.replace('## Hard rules', '## Rules'))],
+  ['K11', 'a build folder with no row in the builds catalog', (d) => fs.mkdirSync(path.join(d, 'builds', 'new-build'))],
 ];
 
 for (const [id, what, breakIt] of BREAKS) {

@@ -175,6 +175,6 @@ Record: tool, model, date, PASS / FAIL / NOT TESTED per check, and where the evi
 
 | Tool / model | Date | Checks 1-8 | Check 9 | Not tested | Record |
 |---|---|---|---|---|---|
-| Claude desktop app (Code), Claude Fable 5.2 for every role | 2026-11-13 | all PASS (6 and 7 with notes); mandatory 1, 4, 5, 8 PASS | hidden checker 59/59 with the plan and 59/59 with no plan; plan arm 199,479 tokens and 389 s of agent time, no-plan arm 97,545 tokens and 231 s; one run each | everything past step 0 with more than one worker: the planner chose one worker | `selftest-run/orchestration/RESULTS.md` |
+| Claude desktop app (Code), Claude Fable 5.2 for every role | 2026-11-13 | all PASS (6 and 7 with notes); mandatory 1, 4, 5, 8 PASS | hidden checker 59/59 with the plan and 59/59 with no plan; plan arm 199,479 tokens and 389 s of agent time, no-plan arm 97,545 tokens and 231 s; one run each | everything past step 0 with more than one worker: the planner chose one worker | `builds/orchestration/RESULTS.md` |
 
 What this run changed in the label: CANDIDATE to EXPERIMENTAL, on "method followed" only. What it did not show: any benefit. What would: a task large enough to pass step 0, run both ways, more than once, checked by someone who did not write this skill.
